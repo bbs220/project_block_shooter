@@ -3,6 +3,7 @@ import App from "./App";
 import LayoutState from "./layout/LayoutState";
 import GamePage from "./pages/GamePage";
 import WelcomePage from "./pages/WelcomePage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 export const primaryRouter = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const primaryRouter = createBrowserRouter([
             <GamePage />
           </LayoutState>
         ),
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />,
       },
     ],
   },

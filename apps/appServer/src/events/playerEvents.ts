@@ -1,4 +1,4 @@
-import { GeckosServer, ServerChannel } from "@geckos.io/server";
+import { Server, Socket } from "socket.io";
 import RAPIER from "@dimforge/rapier3d-compat";
 import {
   getRandomColor,
@@ -64,8 +64,8 @@ export function scheduleRespawn(id: string, delayMs: number = 3000) {
 
 // --- EVENT HANDLERS ---
 
-export function handleConnection(channel: ServerChannel) {
-  if (!channel.id) return;
+export function handleConnection(socket: Socket) {
+  if (!socket.id) return;
 
   const playerName = getRandomName();
   let redCount = 0;
@@ -85,7 +85,7 @@ export function handleConnection(channel: ServerChannel) {
     .lockRotations();
 
   const body = world.createRigidBody(bodyDesc);
-  body.userData = { id: channel.id };
+  body.userData = { id: socket.id };
 
   const colliderDesc = RAPIER.ColliderDesc.capsule(
     PLAYER_CONFIG.HALF_HEIGHT,
@@ -93,7 +93,7 @@ export function handleConnection(channel: ServerChannel) {
   );
   world.createCollider(colliderDesc, body);
 
-  players.set(channel.id, {
+  players.set(socket.id, {
     name: playerName,
     color: teamColor,
     team: assignedTeam,
@@ -120,7 +120,7 @@ export function handleConnection(channel: ServerChannel) {
   });
 
   logger.info(
-    `user connected: ${playerName} (${channel.id}) joined team ${assignedTeam}`,
+    `user connected: ${playerName} (${socket.id}) joined team ${assignedTeam}`,
   );
 }
 
@@ -203,7 +203,7 @@ export function handleReload(id: string) {
   }, weapon.reloadTime);
 }
 
-export function handleShoot(id: string, data: any, io: GeckosServer) {
+export function handleShoot(id: string, data: any, io: Server) {
   const shooter = players.get(id);
   if (!shooter || shooter.isDead || shooter.isReloading) return;
 

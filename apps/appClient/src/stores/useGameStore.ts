@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { ClientChannel } from "@geckos.io/client";
+import type { Socket } from "socket.io-client";
 
 // specific types for strictness
 export type WeaponType = "assaultRifle" | "pistol" | "burstRifle";
@@ -45,7 +45,7 @@ export interface KillEvent {
 export interface GameStore {
   // network & identity
   localId: string | null;
-  channel: ClientChannel | null;
+  channel: Socket | null;
 
   // global match state
   mode: GameMode;
@@ -58,7 +58,7 @@ export interface GameStore {
 
   // actions
   setLocalId: (id: string) => void;
-  setChannel: (channel: ClientChannel) => void;
+  setChannel: (channel: Socket) => void;
   setPlayers: (players: Record<string, PlayerState>) => void;
 
   // generic updater for match info (time, scores, etc)

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import geckos from "@geckos.io/client";
+import { io } from "socket.io-client";
 import { useGameStore } from "../../stores/useGameStore";
 
 export function NetworkManager() {
@@ -12,36 +12,33 @@ export function NetworkManager() {
   const setChannel = useGameStore((state) => state.setChannel);
 
   useEffect(() => {
-    const channel = geckos({
-      url: serverUrl,
-      port: serverPort,
+    // initialize socket.io connection
+    const socket = io(`${serverUrl}:${serverPort}`);
+
+    socket.on("connect_error", (error) => {
+      console.error("connection error", error);
     });
 
-    channel.onConnect((error) => {
-      if (error) {
-        console.error("connection error", error);
-        return;
-      }
-
+    socket.on("connect", () => {
       console.log(`connected to server at ${serverUrl}:${serverPort}!`);
 
       // store the local client id and the channel globally
-      if (channel.id) {
-        setLocalId(channel.id);
-        setChannel(channel);
+      if (socket.id) {
+        setLocalId(socket.id);
+        setChannel(socket);
       }
 
       // send a test message
-      channel.emit("chat message", "hello from the r3f client");
+      socket.emit("chat message", "hello from the r3f client");
     });
 
     // listen for the server echo or test messages
-    channel.on("chat message", (data) => {
+    socket.on("chat message", (data) => {
       console.log("message from server:", data);
     });
 
     // update zustand with authoritative server state
-    channel.on("state", (data: any) => {
+    socket.on("state", (data) => {
       const { players, ...matchInfo } = data;
 
       // sync using the two separate zustand setters
@@ -49,7 +46,7 @@ export function NetworkManager() {
       useGameStore.getState().updateMatchData(matchInfo);
     });
 
-    channel.on("kill_feed", (data: any) => {
+    socket.on("kill_feed", (data) => {
       useGameStore.getState().addKillEvent({
         ...data,
         timestamp: Date.now(),
@@ -59,9 +56,9 @@ export function NetworkManager() {
     return () => {
       // catch strict mode unmounts before webrtc is ready
       try {
-        channel.close();
+        socket.disconnect();
       } catch (err) {
-        console.warn("geckos cleanup bypassed during strict mode remount", err);
+        console.warn("socket cleanup bypassed during strict mode remount", err);
       }
     };
   }, [setPlayers, setLocalId, setChannel, serverUrl, serverPort]);

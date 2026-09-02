@@ -11,7 +11,7 @@ export const matchData = {
   teamScores: { red: 0, blue: 0 },
 };
 
-// helper to serialize state for geckos broadcast
+// helper to serialize state for socket broadcast
 export const getFullState = () => {
   const safePlayers: Record<string, any> = {};
 
