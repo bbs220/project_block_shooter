@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { logger } from "./utils/logger.js";
-import geckos from "@geckos.io/server";
+import { Server } from "socket.io";
 import RAPIER from "@dimforge/rapier3d-compat";
 import http from "http";
 import { expressApp } from "./expressApp.js";
@@ -31,8 +31,6 @@ const currentMap = MAPS["arena_01"];
 // subtract 1.5 meters from the edge to account for the wall thickness + player radius.
 const maxBoundX = currentMap.floor.width / 2 - 1.5;
 const maxBoundZ = currentMap.floor.depth / 2 - 1.5;
-
-const io = geckos();
 
 async function startServer() {
   // wait for webassembly to compile and load
@@ -67,46 +65,52 @@ async function startServer() {
 
   logger.info(`loaded physical map colliders: ${currentMap.name}`);
 
-  // setup unified http and geckos server
+  // setup unified http and socket server
   const expressServer = http.createServer(expressApp);
-  io.addServer(expressServer);
+
+  const io = new Server(expressServer, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+    },
+  });
 
   // listen on the http server instead of direct io listen
   expressServer.listen(PORT, () => {
     logger.info(`🚀 server is live`);
   });
 
-  io.onConnection((channel) => {
-    if (!channel.id) return;
+  io.on("connection", (socket) => {
+    if (!socket.id) return;
 
-    handleConnection(channel);
+    handleConnection(socket as any);
 
-    channel.on("playerInput", (data: any) => {
-      handlePlayerInput(channel.id as string, data);
+    socket.on("playerInput", (data: any) => {
+      handlePlayerInput(socket.id, data);
     });
 
-    channel.on("jump", () => {
-      handleJump(channel.id as string);
+    socket.on("jump", () => {
+      handleJump(socket.id);
     });
 
-    channel.on("shoot", (data: any) => {
-      handleShoot(channel.id as string, data, io);
+    socket.on("shoot", (data: any) => {
+      handleShoot(socket.id, data, io as any);
     });
 
-    channel.on("switchWeapon", (weaponId: any) => {
-      handleSwitchWeapon(channel.id as string, weaponId);
+    socket.on("switchWeapon", (weaponId: any) => {
+      handleSwitchWeapon(socket.id, weaponId);
     });
 
-    channel.on("reload", () => {
-      handleReload(channel.id as string);
+    socket.on("reload", () => {
+      handleReload(socket.id);
     });
 
-    channel.onDisconnect((reason) => {
-      handleDisconnect(channel.id as string, reason);
+    socket.on("disconnect", (reason) => {
+      handleDisconnect(socket.id, reason);
     });
 
-    channel.on("error", (err) => {
-      logger.error(`channel error for ${channel.id}: ${err}`);
+    socket.on("error", (err) => {
+      logger.error(`channel error for ${socket.id}: ${err}`);
     });
   });
 
@@ -187,7 +191,7 @@ async function startServer() {
     if (debugTickCounter % 60 === 0) {
       // very heavy logs do not run this for long time
       // logger.info(
-      //   "GECKOS PAYLOAD SNAPSHOT:\n" + JSON.stringify(getFullState(), null, 2),
+      //   "SOCKET PAYLOAD SNAPSHOT:\n" + JSON.stringify(getFullState(), null, 2),
       // );
     }
 

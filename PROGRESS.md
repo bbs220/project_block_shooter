@@ -3,7 +3,7 @@
 ## ✅ Completed: Core Engine & Combat
 | Feature | Status | Details |
 | :--- | :--- | :--- |
-| **Networking** | Finished | Authoritative Node.js server using Geckos.io. |
+| **Networking** | Finished | Authoritative Node.js server using socket.io. |
 | **Physics & Tick** | Finished | 60Hz server heartbeat using Rapier3D. |
 | **Movement** | Finished | Client-side prediction with true FPS camera math. |
 | **Advanced Movement**| Finished | Server-side gravity, jumping, sprint tracking, and client headbob. |

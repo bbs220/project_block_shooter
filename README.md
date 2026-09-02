@@ -4,7 +4,7 @@ A low-poly, 8-player multiplayer arena FPS built with React Three Fiber and a se
 
 ## 🚀 Project Status
 - **MVP Phase**: Core networking, client-side prediction, and hitscan combat mechanics are fully implemented.
-- **Architecture**: Authoritative server using **geckos.io** (UDP over WebRTC) to prevent cheating and ensure smooth, low-latency hit registration.
+- **Architecture**: Authoritative server using **socket.io** (TCP) to prevent cheating and ensure smooth, low-latency hit registration.
 - **📊 View Full Progress**: Check out the detailed [MVP Status Report](./PROGRESS.md) to see completed features and remaining tasks.
 
 ## 🛠️ Technical Stack
@@ -21,7 +21,7 @@ A low-poly, 8-player multiplayer arena FPS built with React Three Fiber and a se
 ### Server
 | Tool | Description |
 | :--- | :--- |
-| **Networking** | Geckos.io (UDP-like communication) |
+| **Networking** | Socket.io (TCP) |
 | **Physics** | @dimforge/rapier3d-compat (Headless engine) |
 | **Logging** | Pino |
 | **Runtime** | Node.js with TypeScript (tsx) |
