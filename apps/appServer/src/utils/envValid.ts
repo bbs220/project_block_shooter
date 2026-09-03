@@ -6,7 +6,6 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
-  CLIENT_URL: z.url({ error: "CLIENT_URL must be a valid URL" }),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
