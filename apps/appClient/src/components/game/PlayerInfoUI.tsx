@@ -72,7 +72,7 @@ const PlayerInfoUI = () => {
             return (
               <div
                 key={index}
-                className={`flex items-center justify-between px-4 bg-black/40 border-r-4 transition-all duration-300 ease-out w-64 ${
+                className={`flex items-center justify-between px-4 bg-black/40 border-r-4 transition-all duration-300 ease-out w-64 backdrop-blur-sm ${
                   isActive
                     ? "h-20 border-white opacity-100"
                     : "h-12 border-transparent opacity-60"

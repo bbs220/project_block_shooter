@@ -26,6 +26,6 @@ export const useAppStore = create<typeAppStore>((set) => ({
     set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
 
   // controls visibility
-  showControls: false,
+  showControls: true,
   setShowControls: (isShowing) => set({ showControls: isShowing }),
 }));
