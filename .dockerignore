@@ -1,0 +1,13 @@
+node_modules
+apps/appClient/node_modules
+apps/appServer/node_modules
+packages/*/node_modules
+
+dist
+apps/appClient/dist
+apps/appServer/dist
+packages/*/dist
+
+.git
+.env
+.DS_Store
