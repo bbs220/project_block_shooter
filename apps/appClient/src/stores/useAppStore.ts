@@ -9,6 +9,10 @@ type typeAppStore = {
   // sidebar state
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
+
+  // controls state
+  showControls: boolean;
+  setShowControls: (isOpen: boolean) => void;
 };
 
 export const useAppStore = create<typeAppStore>((set) => ({
@@ -20,4 +24,8 @@ export const useAppStore = create<typeAppStore>((set) => ({
   isSidebarOpen: false,
   toggleSidebar: () =>
     set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
+
+  // controls visibility
+  showControls: false,
+  setShowControls: (isShowing) => set({ showControls: isShowing }),
 }));
