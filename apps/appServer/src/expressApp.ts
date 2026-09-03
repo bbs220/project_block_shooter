@@ -15,7 +15,8 @@ if (process.env.NODE_ENV === "production") {
 
   expressApp.use(express.static(clientDistPath));
 
-  expressApp.get(/(.*)/, (req, res) => {
+  // Catch-all route using the standard Express wildcard for SPA routing
+  expressApp.get("*", (req, res) => {
     res.sendFile(path.join(clientDistPath, "index.html"));
   });
 } else {

@@ -3,24 +3,27 @@ import { io } from "socket.io-client";
 import { useGameStore } from "../../stores/useGameStore";
 
 export function NetworkManager() {
-  // env with safe fallbacks
-  const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost";
-  const serverPort = Number(import.meta.env.VITE_SERVER_PORT) || 9208;
-
   const setPlayers = useGameStore((state) => state.setPlayers);
   const setLocalId = useGameStore((state) => state.setLocalId);
   const setChannel = useGameStore((state) => state.setChannel);
 
   useEffect(() => {
+    const isProd = import.meta.env.PROD;
+    // In production, undefined forces socket.io to connect to the window's exact origin (Render's 443).
+    // In development, it connects to the local Node server port.
+    const socketUrl = isProd ? undefined : "http://localhost:9208";
+
     // initialize socket.io connection
-    const socket = io(`${serverUrl}:${serverPort}`);
+    const socket = io(socketUrl);
 
     socket.on("connect_error", (error) => {
       console.error("connection error", error);
     });
 
     socket.on("connect", () => {
-      console.log(`connected to server at ${serverUrl}:${serverPort}!`);
+      console.log(
+        `connected to server ${isProd ? "in production" : "at " + socketUrl}!`,
+      );
 
       // store the local client id and the channel globally
       if (socket.id) {
@@ -61,7 +64,7 @@ export function NetworkManager() {
         console.warn("socket cleanup bypassed during strict mode remount", err);
       }
     };
-  }, [setPlayers, setLocalId, setChannel, serverUrl, serverPort]);
+  }, [setPlayers, setLocalId, setChannel]);
 
   return null;
 }
