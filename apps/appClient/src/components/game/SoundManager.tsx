@@ -21,13 +21,13 @@ export function SoundManager() {
   useEffect(() => {
     if (!channel || !localId || hasAttachedListeners.current) return;
 
-    const onHitConfirm = (shooterId: any) => {
+    const onHitConfirm = (shooterId: string) => {
       if (shooterId === localId) {
         playRefs.current.hit();
       }
     };
 
-    const onKillFeed = (data: any) => {
+    const onKillFeed = (data: { shooterId: string }) => {
       if (data.shooterId === localId) {
         playRefs.current.kill();
       }

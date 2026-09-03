@@ -9,7 +9,7 @@ import {
   combatState,
   PLAYER_CONFIG,
   PHYSICS_CONFIG,
-  MAPS, // <-- Imported MAPS here
+  MAPS,
 } from "@block-shooter/shared";
 import { calculateHeadbobOffset } from "../../utils/headbob";
 import { FOV } from "../../utils/tunablesClient";
