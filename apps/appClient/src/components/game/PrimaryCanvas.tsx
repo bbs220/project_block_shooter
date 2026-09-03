@@ -25,11 +25,14 @@ import WeaponViewmodel from "./WeaponViewModel";
 import AdsVignette from "./AdsVigette";
 import PlayerInfoUI from "./PlayerInfoUI";
 import ControlsInfo from "./ControlsInfo";
+import { useAppStore } from "../../stores/useAppStore";
+import { useEffect } from "react";
 
 const PrimaryScene = () => {
-  const { showPhyDebug, showGizmo } = useTweakpane({
+  const { showPhyDebug, showGizmo, showFPS } = useTweakpane({
     showPhyDebug: false,
     showGizmo: false,
+    showFPS: false,
   });
 
   return (
@@ -42,7 +45,7 @@ const PrimaryScene = () => {
         <GizmoHelper alignment="top-left" margin={[60, 120]}>
           <GizmoViewport labelColor="white" visible={showGizmo} />
         </GizmoHelper>
-        <Stats showPanel={0} />
+        <Stats showPanel={showFPS ? 0 : 4} />
         <ambientLight intensity={1} color={"#ffffff"} />
         <Sky
           distance={450000}
@@ -64,6 +67,12 @@ const PrimaryScene = () => {
 };
 
 const PrimaryCanvas = () => {
+  const { setActivePage } = useAppStore();
+
+  useEffect(() => {
+    setActivePage("ingame");
+  }, [setActivePage]);
+
   return (
     <>
       {/* what buttons to press */}
