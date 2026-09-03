@@ -1,5 +1,5 @@
-# Use a lightweight Node 20 image
-FROM node:20-alpine
+# Use a lightweight Node 22 image
+FROM node:22-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
