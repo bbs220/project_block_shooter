@@ -19,7 +19,7 @@ import { getRandomSpawn } from "./utils/helpers.js";
 import { envValid } from "./utils/envValid.js";
 import { GRAVITY, MAPS } from "@block-shooter/shared";
 
-const PORT = Number(envValid.PORT);
+const PORT = Number(envValid.PORT) || 9208;
 
 // export world so playerevents can import it
 export let world: RAPIER.World;
