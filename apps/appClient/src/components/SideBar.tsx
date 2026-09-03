@@ -5,9 +5,9 @@ import { Link } from "react-router";
 const SideBar = () => {
   const isSidebarOpen = useAppStore((state) => state.isSidebarOpen);
   const toggleSidebar = useAppStore((state) => state.toggleSidebar);
-
   const showControls = useAppStore((state) => state.showControls);
   const setShowControls = useAppStore((state) => state.setShowControls);
+  const appVersion = useAppStore((state) => state.appVersion);
 
   return (
     <div className="z-50">
@@ -102,9 +102,16 @@ const SideBar = () => {
           </button>
         </div>
 
-        <div className="p-4 border-t-4 border-white/10 bg-black/40">
+        <div className="text-center text-[10px] text-white tracking-[0.2em] mb-2 select-none">
+          {`v${appVersion}.alpha`}
+        </div>
+
+        <div className="p-4 border-t-4 border-white/10 bg-black/40 flex flex-col gap-4">
           <Link to={"/"} className="w-full">
-            <button className="flex items-center gap-4 w-full p-4 border-l-4 transition-all duration-200 uppercase font-black tracking-widest text-sm cursor-pointer group border-red-500/50 hover:border-red-500 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300">
+            <button
+              onClick={toggleSidebar}
+              className="flex items-center gap-4 w-full p-4 border-l-4 transition-all duration-200 uppercase font-black tracking-widest text-sm cursor-pointer group border-red-500/50 hover:border-red-500 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300"
+            >
               <span className="opacity-70 group-hover:opacity-100 transition-opacity">
                 <LogOut size={20} />
               </span>

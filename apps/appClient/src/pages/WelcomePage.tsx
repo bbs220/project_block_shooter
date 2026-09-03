@@ -39,7 +39,7 @@ const WelcomePage = () => {
         </button>
 
         <div className="mt-8 flex flex-col items-center gap-2 w-full border-t-2 border-white/10 pt-4">
-          <div className="flex items-center gap-2 text-gray-400">
+          <div className="flex items-center gap-2 text-gray-400 select-none">
             <Monitor className="w-4 h-4 animate-pulse opacity-50" />
             <span className="text-[10px] md:text-xs font-black tracking-wider">
               Desktop Only{" | "}
@@ -47,7 +47,7 @@ const WelcomePage = () => {
             </span>
           </div>
 
-          <p className="text-[10px] text-gray-600 uppercase tracking-widest font-bold">
+          <p className="text-[10px] text-gray-600 uppercase tracking-widest font-bold select-none">
             Server dictates Game Mode
           </p>
         </div>
