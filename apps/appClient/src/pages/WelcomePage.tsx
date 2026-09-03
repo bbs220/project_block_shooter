@@ -54,7 +54,15 @@ const WelcomePage = () => {
       </div>
 
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white text-[10px] font-black tracking-[0.2em] whitespace-nowrap">
-        Made by <span className="text-gray-400">[bbs220]</span>
+        Made by{" "}
+        <a
+          href="https://github.com/bbs220/project_block_shooter"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="transition-colors duration-200 underline underline-offset-4 decoration-white/20 hover:decoration-white"
+        >
+          bbs220
+        </a>
       </div>
     </div>
   );
