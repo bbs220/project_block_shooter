@@ -1,5 +1,7 @@
 # 🔫 Block Shooter MVP
 
+## Play it [here](https://project-block-shooter.onrender.com/)!
+
 A low-poly, 8-player multiplayer arena FPS built with React Three Fiber and a server-authoritative Node.js backend.
 
 ## 🚀 Project Status
