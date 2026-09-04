@@ -3,11 +3,13 @@ import { useAppStore } from "../stores/useAppStore";
 import { Link } from "react-router";
 
 const SideBar = () => {
-  const isSidebarOpen = useAppStore((state) => state.isSidebarOpen);
-  const toggleSidebar = useAppStore((state) => state.toggleSidebar);
-  const showControls = useAppStore((state) => state.showControls);
-  const setShowControls = useAppStore((state) => state.setShowControls);
-  const appVersion = useAppStore((state) => state.appVersion);
+  const {
+    isSidebarOpen,
+    toggleSidebar,
+    showControls,
+    setShowControls,
+    appVersion,
+  } = useAppStore();
 
   return (
     <div className="z-50">
