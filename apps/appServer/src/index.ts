@@ -80,21 +80,27 @@ async function startServer() {
     logger.info(`🚀 server is live`);
   });
 
-  // handle clean exit on terminal interrupt
+  // handle terminal interrupt
   process.on("SIGTERM", () => {
-    // close the server to free up the port
+    io.close();
     expressServer.close(() => {
-      // exit the node process
       process.exit();
     });
   });
 
-  // handle clean exit on nodemon or tsx restart
+  // handle terminal stop
   process.on("SIGINT", () => {
-    // close the server to free up the port
+    io.close();
     expressServer.close(() => {
-      // exit the node process
       process.exit();
+    });
+  });
+
+  // handle nodemon restart signal
+  process.once("SIGUSR2", () => {
+    io.close();
+    expressServer.close(() => {
+      process.kill(process.pid, "SIGUSR2");
     });
   });
 

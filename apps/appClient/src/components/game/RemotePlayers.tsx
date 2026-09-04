@@ -4,7 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { Clone, PositionalAudio, useGLTF } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 import { useGameStore, type PlayerState } from "../../stores/useGameStore";
-import RemotePlayerUI from "./ui/RemotePlayerUI";
+import RemotePlayersUI from "./ui/RemotePlayersUI";
 import { modelsBank, soundBank } from "../../utils/assetPaths";
 
 // plug your dialled-in numbers here
@@ -333,7 +333,7 @@ const RemotePlayerItem = ({ pos }: { pos: PlayerState }) => {
     <RigidBody type="kinematicPosition" position={[pos.x, pos.y, pos.z]}>
       <group rotation={[0, pos.yaw, 0]}>
         <HoverBotModel pos={pos} mainColor={mainColor} glowColor={glowColor} />
-        <RemotePlayerUI player={pos} />
+        <RemotePlayersUI player={pos} />
       </group>
     </RigidBody>
   );
