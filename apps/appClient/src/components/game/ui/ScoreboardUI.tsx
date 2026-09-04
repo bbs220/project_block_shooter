@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useGameStore } from "../../stores/useGameStore";
+import { useGameStore } from "../../../stores/useGameStore";
 
 const ScoreboardUI = () => {
   const players = useGameStore((state) => state.players);

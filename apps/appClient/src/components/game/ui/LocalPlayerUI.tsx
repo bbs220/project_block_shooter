@@ -1,6 +1,6 @@
-import { useGameStore } from "../../stores/useGameStore";
+import { useGameStore } from "../../../stores/useGameStore";
 import { WEAPONS } from "@block-shooter/shared";
-import { iconBank } from "../../utils/assetPaths";
+import { iconBank } from "../../../utils/assetPaths";
 
 const getWeaponIcon = (weaponKey: string) => {
   if (weaponKey === "burstRifle") return iconBank.burstRifle;
@@ -14,7 +14,7 @@ const LOADOUT = [
   { id: "burstRifle", keybind: "3" },
 ];
 
-const PlayerInfoUI = () => {
+const LocalPlayerUI = () => {
   const players = useGameStore((state) => state.players);
   const localId = useGameStore((state) => state.localId);
 
@@ -134,4 +134,4 @@ const PlayerInfoUI = () => {
   );
 };
 
-export default PlayerInfoUI;
+export default LocalPlayerUI;

@@ -1,7 +1,7 @@
 import { Html } from "@react-three/drei";
-import type { PlayerState } from "../../stores/useGameStore";
+import type { PlayerState } from "../../../stores/useGameStore";
 
-export default function PlayerLabel({ player }: { player: PlayerState }) {
+export default function RemotePlayerUI({ player }: { player: PlayerState }) {
   const displayHealth = Math.max(0, player.health);
   const maxHealth = 100;
   const healthSegments = 10;

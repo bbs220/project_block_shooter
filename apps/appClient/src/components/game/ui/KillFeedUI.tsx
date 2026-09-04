@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
-import { useGameStore, type KillEvent } from "../../stores/useGameStore";
+import { useGameStore, type KillEvent } from "../../../stores/useGameStore";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { iconBank } from "../../utils/assetPaths";
+import { iconBank } from "../../../utils/assetPaths";
 
 const getKillFeedIcon = (weaponName: string) => {
   const name = weaponName.toLowerCase();
