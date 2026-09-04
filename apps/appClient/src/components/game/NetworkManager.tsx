@@ -30,14 +30,6 @@ export function NetworkManager() {
         setLocalId(socket.id);
         setChannel(socket);
       }
-
-      // send a test message
-      socket.emit("chat message", "hello from the r3f client");
-    });
-
-    // listen for the server echo or test messages
-    socket.on("chat message", (data) => {
-      console.log("message from server:", data);
     });
 
     // update zustand with authoritative server state
