@@ -3,3 +3,10 @@
 @theme {
   --font-inter: "Inter", sans-serif;
 }
+
+:root {
+  /* tweakpane width override */
+  .tp-dfwv {
+    width: 340px !important;
+  }
+}

@@ -1,22 +1,62 @@
 import { useState, useEffect, useRef } from "react";
 import { Pane } from "tweakpane";
 
-// conditional type: Extracts 'V' if it's { value: V }, otherwise returns the type itself
+type FolderApi = ReturnType<Pane["addFolder"]>;
+
+type TweakpaneOptions<V = unknown> = {
+  value: V;
+  folder?: string;
+  label?: string;
+  min?: number;
+  max?: number;
+  step?: number;
+  options?: Record<string, V> | { text: string; value: V }[];
+  picker?: "inline" | "popup";
+  expanded?: boolean;
+  [key: string]: unknown;
+};
+
 type ExtractValue<T> = T extends { value: infer V } ? V : T;
 
-// mapped type: Loops over your config object and applies ExtractValue to every key
 type TweakpaneState<T> = {
   [K in keyof T]: ExtractValue<T[K]>;
 };
 
-// lives in module scope to share the pane across all components
+type GlobalFolderConfig = {
+  title: string;
+  expanded?: boolean;
+};
+
+type ConfigType<T> = {
+  [K in keyof T]: T[K] extends { value: infer V } ? TweakpaneOptions<V> : T[K];
+};
+
 let sharedPane: Pane | null = null;
+let sharedFolders: Record<string, FolderApi> = {};
 let activeHooksCount = 0;
 
 export function useTweakpane<T extends Record<string, unknown>>(
-  config: T,
+  config: ConfigType<T>,
+): TweakpaneState<T>;
+
+export function useTweakpane<T extends Record<string, unknown>>(
+  folderConfig: string | GlobalFolderConfig,
+  config: ConfigType<T>,
+): TweakpaneState<T>;
+
+export function useTweakpane<T extends Record<string, unknown>>(
+  arg1: string | GlobalFolderConfig | ConfigType<T>,
+  arg2?: ConfigType<T>,
 ): TweakpaneState<T> {
-  // initialize React state for rendering
+  const hasFolderConfig = arg2 !== undefined;
+  const folderOptions = hasFolderConfig
+    ? typeof arg1 === "string"
+      ? { title: arg1 }
+      : (arg1 as GlobalFolderConfig)
+    : undefined;
+
+  const config = (hasFolderConfig ? arg2 : arg1) as ConfigType<T>;
+
   const [params, setParams] = useState<TweakpaneState<T>>(() => {
     const initialState = {} as TweakpaneState<T>;
 
@@ -34,37 +74,84 @@ export function useTweakpane<T extends Record<string, unknown>>(
   });
 
   const configRef = useRef(config);
-
-  // create a stable, mutable object specifically for Tweakpane to bind to.
-  // never replace this object; we just let Tweakpane mutate its properties.
+  const folderOptionsRef = useRef(folderOptions);
   const tweakpaneTargetRef = useRef({ ...params });
 
   useEffect(() => {
-    // ONLY run tweakpane if Vite is in development mode
-    if (!import.meta.env.DEV) return;
+    if (import.meta.env.PROD) return;
 
     if (!sharedPane) {
       sharedPane = new Pane({ title: "🛠️ Controls" });
+      sharedFolders = {};
     }
     activeHooksCount++;
 
     const initialConfig = configRef.current;
-
-    // structurally type the binding so we can call dispose() safely
+    const baseFolderOpts = folderOptionsRef.current;
     const bindings: Array<{ dispose: () => void }> = [];
+
+    const getFolder = (
+      path: string,
+      options?: { expanded?: boolean },
+    ): FolderApi => {
+      if (sharedFolders[path]) {
+        if (options?.expanded !== undefined) {
+          sharedFolders[path].expanded = options.expanded;
+        }
+        return sharedFolders[path];
+      }
+
+      const parts = path.split("/");
+      let currentPane: Pane | FolderApi = sharedPane!;
+      let currentPath = "";
+
+      for (let i = 0; i < parts.length; i++) {
+        const part = parts[i];
+        currentPath += (currentPath ? "/" : "") + part;
+
+        if (!sharedFolders[currentPath]) {
+          const isLastPart = i === parts.length - 1;
+          sharedFolders[currentPath] = currentPane.addFolder({
+            title: part,
+            ...(isLastPart && options?.expanded !== undefined
+              ? { expanded: options.expanded }
+              : {}),
+          });
+        }
+        currentPane = sharedFolders[currentPath];
+      }
+      return currentPane as FolderApi;
+    };
+
+    if (baseFolderOpts?.title) {
+      getFolder(baseFolderOpts.title, { expanded: baseFolderOpts.expanded });
+    }
 
     (Object.keys(initialConfig) as Array<keyof T>).forEach((key) => {
       const item = initialConfig[key];
-      const options =
-        typeof item === "object" && item !== null && "value" in item
-          ? item
-          : {};
+      const isConfigObject =
+        typeof item === "object" && item !== null && "value" in item;
 
-      // bind Tweakpane to our stable ref object
-      const binding = sharedPane!
+      let options: Omit<TweakpaneOptions, "folder"> = {};
+      let itemFolder: string | undefined = undefined;
+
+      if (isConfigObject) {
+        const { folder: f, ...rest } = item as TweakpaneOptions;
+        itemFolder = f;
+        options = rest;
+      }
+
+      const finalFolderPath = [baseFolderOpts?.title, itemFolder]
+        .filter(Boolean)
+        .join("/");
+
+      const targetPane = finalFolderPath
+        ? getFolder(finalFolderPath)
+        : sharedPane!;
+
+      const binding = targetPane
         .addBinding(tweakpaneTargetRef.current, key as string, options)
-        .on("change", (ev) => {
-          // when Tweakpane mutates the ref, sync that change to React state to trigger a render
+        .on("change", (ev: { value: unknown }) => {
           setParams((prev) => ({ ...prev, [key]: ev.value }));
         });
 
@@ -72,15 +159,13 @@ export function useTweakpane<T extends Record<string, unknown>>(
     });
 
     return () => {
-      // remove only the inputs associated with this specific component
       bindings.forEach((binding) => binding.dispose());
-
       activeHooksCount--;
 
-      // if no components are using the pane anymore, destroy the whole window
       if (activeHooksCount === 0 && sharedPane) {
         sharedPane.dispose();
         sharedPane = null;
+        sharedFolders = {};
       }
     };
   }, []);
