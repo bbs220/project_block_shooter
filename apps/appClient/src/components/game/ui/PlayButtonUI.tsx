@@ -1,6 +1,6 @@
 import useSound from "use-sound";
-import { useGameStore } from "../../stores/useGameStore";
-import { soundBank } from "../../utils/assetPaths";
+import { useGameStore } from "../../../stores/useGameStore";
+import { soundBank } from "../../../utils/assetPaths";
 
 const PlayButtonUI = () => {
   const isLocked = useGameStore((state) => state.isLocked);

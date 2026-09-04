@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useGameStore } from "../../stores/useGameStore";
+import { useGameStore } from "../../../stores/useGameStore";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { RotateCw } from "lucide-react";

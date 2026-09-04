@@ -11,29 +11,32 @@ import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { useTweakpane } from "../../hooks/useTweakPane";
 import { FOV } from "../../utils/tunablesClient";
-import CrosshairUI from "./CrosshairUI";
+import CrosshairUI from "./ui/CrosshairUI";
 import ArenaGeometry from "./ArenaGeometry";
-import KillFeedUI from "./KillFeedUI";
+import KillFeedUI from "./ui/KillFeedUI";
 import LocalPlayer from "./LocalPlayer";
-import MatchTimerUI from "./MatchTimerUI";
+import MatchTimerUI from "./ui/MatchTimerUI";
 import { NetworkManager } from "./NetworkManager";
-import PlayButtonUI from "./PlayButtonUI";
+import PlayButtonUI from "./ui/PlayButtonUI";
 import RemotePlayers from "./RemotePlayers";
-import ScoreboardUI from "./ScoreboardUI";
+import ScoreboardUI from "./ui/ScoreboardUI";
 import { SoundManager } from "./SoundManager";
 import WeaponViewmodel from "./WeaponViewModel";
 import AdsVignette from "./AdsVigette";
-import PlayerInfoUI from "./PlayerInfoUI";
-import ControlsInfo from "./ControlsInfo";
+import LocalPlayerUI from "./ui/LocalPlayerUI";
+import ControlsDisplayUI from "./ui/ControlsDisplayUI";
 import { useAppStore } from "../../stores/useAppStore";
 import { useEffect } from "react";
 
 const PrimaryScene = () => {
-  const { showPhyDebug, showGizmo, showFPS } = useTweakpane({
-    showPhyDebug: false,
-    showGizmo: false,
-    showFPS: false,
-  });
+  const { showPhyDebug, showGizmo, showFPS } = useTweakpane(
+    { title: "🏞️ Scene", expanded: true },
+    {
+      showPhyDebug: { value: false, label: "physics debug" },
+      showGizmo: { value: false, label: "show gizmo" },
+      showFPS: { value: false, label: "show fps" },
+    },
+  );
 
   return (
     <>
@@ -76,7 +79,7 @@ const PrimaryCanvas = () => {
   return (
     <>
       {/* what buttons to press */}
-      <ControlsInfo />
+      <ControlsDisplayUI />
       {/* cursor for aim */}
       <CrosshairUI />
       {/* container for pointer controls */}
@@ -88,7 +91,7 @@ const PrimaryCanvas = () => {
       {/* tiny kill feed of the match in a corner */}
       <KillFeedUI />
       {/* stuff like health and ammo */}
-      <PlayerInfoUI />
+      <LocalPlayerUI />
       {/* network manager runs silently outside the 3d canvas */}
       <NetworkManager />
       {/* responsible for all 2d and ui sounds */}

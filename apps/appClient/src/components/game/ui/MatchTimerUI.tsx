@@ -1,4 +1,4 @@
-import { useGameStore } from "../../stores/useGameStore";
+import { useGameStore } from "../../../stores/useGameStore";
 
 const MatchTimerUI = () => {
   const matchState = useGameStore((state) => state.matchState);

@@ -1,6 +1,6 @@
-import { useAppStore } from "../../stores/useAppStore";
+import { useAppStore } from "../../../stores/useAppStore";
 
-const ControlsInfo = () => {
+const ControlsDisplayUI = () => {
   const showControls = useAppStore((state) => state.showControls);
 
   return (
@@ -44,4 +44,4 @@ const ControlsInfo = () => {
   );
 };
 
-export default ControlsInfo;
+export default ControlsDisplayUI;
