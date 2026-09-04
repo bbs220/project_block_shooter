@@ -22,3 +22,14 @@ export const modelsBank: Record<string, string> = {
   pistol: "/models/pistol_00.glb",
   robot: "/models/robot.glb",
 };
+
+export const texturesBank = {
+  floorDiff: "/images/floor/brick_floor_04_diff_2k.png",
+  floorDisp: "/images/floor/brick_floor_04_disp_2k.png",
+  floorNorm: "/images/floor/brick_floor_04_nor_dx_2k.png",
+  floorRough: "/images/floor/brick_floor_04_rough_2k.png",
+  wallDiff: "/images/walls/granite_tile_04_diff_2k.png",
+  wallDisp: "/images/walls/granite_tile_04_disp_2k.png",
+  wallNorm: "/images/walls/granite_tile_04_nor_dx_2k.png",
+  wallRough: "/images/walls/granite_tile_04_rough_2k.png",
+};
