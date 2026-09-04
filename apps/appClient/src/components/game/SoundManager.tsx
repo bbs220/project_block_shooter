@@ -16,13 +16,11 @@ export function SoundManager() {
     playRefs.current = { hit: playHit, kill: playKill };
   }, [playHit, playKill]);
 
-  const hasAttachedListeners = useRef(false);
-
   useEffect(() => {
-    if (!channel || !localId || hasAttachedListeners.current) return;
+    if (!channel || !localId) return;
 
-    const onHitConfirm = (shooterId: string) => {
-      if (shooterId === localId) {
+    const onHitConfirm = (data: { shooterId: string }) => {
+      if (data.shooterId === localId) {
         playRefs.current.hit();
       }
     };
@@ -36,7 +34,10 @@ export function SoundManager() {
     channel.on("hit_confirm", onHitConfirm);
     channel.on("kill_feed", onKillFeed);
 
-    hasAttachedListeners.current = true;
+    return () => {
+      channel.off("hit_confirm", onHitConfirm);
+      channel.off("kill_feed", onKillFeed);
+    };
   }, [channel, localId]);
 
   return null;

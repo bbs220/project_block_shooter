@@ -253,7 +253,7 @@ export function handleShoot(id: string, data: any, io: Server) {
           `${shooter.name} hit ${hitPlayer.name} with ${weapon.name}! hp: ${hitPlayer.health}`,
         );
 
-        io.emit("hit_confirm", id);
+        io.emit("hit_confirm", { shooterId: id });
 
         if (hitPlayer.health <= 0) {
           hitPlayer.isDead = true;
