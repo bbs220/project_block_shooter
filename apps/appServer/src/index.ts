@@ -80,6 +80,24 @@ async function startServer() {
     logger.info(`🚀 server is live`);
   });
 
+  // handle clean exit on terminal interrupt
+  process.on("SIGTERM", () => {
+    // close the server to free up the port
+    expressServer.close(() => {
+      // exit the node process
+      process.exit();
+    });
+  });
+
+  // handle clean exit on nodemon or tsx restart
+  process.on("SIGINT", () => {
+    // close the server to free up the port
+    expressServer.close(() => {
+      // exit the node process
+      process.exit();
+    });
+  });
+
   io.on("connection", (socket) => {
     if (!socket.id) return;
 
