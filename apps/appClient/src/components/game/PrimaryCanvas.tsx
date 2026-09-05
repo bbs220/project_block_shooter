@@ -2,13 +2,12 @@ import { GRAVITY } from "@block-shooter/shared";
 import {
   GizmoHelper,
   GizmoViewport,
-  Loader,
   PerspectiveCamera,
   Stats,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useTweakpane } from "../../hooks/useTweakPane";
 import { useAppStore } from "../../stores/useAppStore";
 import { FOV } from "../../utils/tunablesClient";
@@ -27,6 +26,7 @@ import MatchTimerUI from "./ui/MatchTimerUI";
 import PlayButtonUI from "./ui/PlayButtonUI";
 import ScoreboardUI from "./ui/ScoreboardUI";
 import WeaponViewmodel from "./WeaponViewModel";
+import LoadingScreenUI from "./ui/LoadingScreenUI";
 
 const PrimaryScene = () => {
   const { showPhyDebug, showGizmo, showFPS } = useTweakpane(
@@ -53,7 +53,7 @@ const PrimaryScene = () => {
         <>
           {/* captures mouse and moves camera for local player */}
           <LocalPlayer />
-          {/* render all players EXCEPT the local one */}
+          {/* render all players except the local one */}
           <RemotePlayers />
           {/* something to stand on */}
           <ArenaGeometry />
@@ -65,6 +65,19 @@ const PrimaryScene = () => {
 
 const PrimaryCanvas = () => {
   const { setActivePage } = useAppStore();
+
+  const { setDpr } = useTweakpane(
+    { title: "🏞️ Scene" },
+    {
+      setDpr: {
+        value: 1,
+        min: 0.1,
+        max: 1,
+        step: 0.1,
+        label: "resolution scale",
+      },
+    },
+  );
 
   useEffect(() => {
     setActivePage("ingame");
@@ -86,21 +99,26 @@ const PrimaryCanvas = () => {
       <KillFeedUI />
       {/* stuff like health and ammo */}
       <LocalPlayerUI />
-      {/* network manager runs silently outside the 3d canvas */}
+      {/* network manager runs silently outside the canvas */}
       <NetworkManager />
-      {/* responsible for all 2d and ui sounds */}
+      {/* responsible for all sounds */}
       <SoundManager />
-      {/* main 3d viewport */}
-      <Canvas shadows="variance" dpr={1}>
-        <PrimaryScene />
-        <AdsVignette />
+      {/* loading ui */}
+      <LoadingScreenUI />
+      {/* main viewport with black fallback background */}
+      <Canvas
+        shadows="variance"
+        dpr={setDpr}
+        style={{ backgroundColor: "black" }}
+      >
+        {/* force scene background to black instantly */}
+        <color attach="background" args={["black"]} />
+        {/* group async loading to prevent individual component flashing */}
+        <Suspense fallback={null}>
+          <PrimaryScene />
+          <AdsVignette />
+        </Suspense>
       </Canvas>
-      {/* loading screen */}
-      <Loader
-        containerStyles={{ backgroundColor: "#171717" }}
-        innerStyles={{ width: "300px" }}
-        barStyles={{ backgroundColor: "#3b82f6" }}
-      />
     </>
   );
 };
