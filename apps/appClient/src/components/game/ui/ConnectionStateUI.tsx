@@ -33,7 +33,7 @@ const ConnectionStateUI = () => {
 
   return (
     // container fixed to the top right of the viewport
-    <div className="absolute top-4 right-4 z-50 flex flex-col items-end gap-2 pointer-events-none">
+    <div className="absolute top-4 left-22 z-40 flex flex-col items-end gap-2 pointer-events-none">
       <div
         className={`flex items-center gap-2 px-3 py-1 font-black uppercase tracking-wider text-xs shadow-md backdrop-blur-sm border-t-2 ${ui.color}`}
       >
