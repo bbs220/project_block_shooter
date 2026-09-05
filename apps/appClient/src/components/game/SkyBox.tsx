@@ -1,10 +1,12 @@
 import { Environment, useEnvironment } from "@react-three/drei";
 import { skyboxBank } from "../../utils/assetPaths";
 import { useTweakpane } from "../../hooks/useTweakPane";
+import { SRGBColorSpace } from "three";
 
 Object.values(skyboxBank).forEach((skybox) => {
   useEnvironment.preload({
     files: [skybox.px, skybox.nx, skybox.py, skybox.ny, skybox.pz, skybox.nz],
+    colorSpace: SRGBColorSpace,
   });
 });
 
@@ -20,6 +22,7 @@ const SkyBox = () => {
           evening: "evening",
           night: "night",
         },
+        label: "time of day",
       },
     },
   );

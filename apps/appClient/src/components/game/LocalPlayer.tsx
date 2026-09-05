@@ -21,12 +21,9 @@ const currentMap = MAPS.arena_01;
 const maxBoundX = currentMap.floor.width / 2 - 1.5;
 const maxBoundZ = currentMap.floor.depth / 2 - 1.5;
 
-export default function LocalPlayer() {
-  const localId = useGameStore((state) => state.localId);
-  const players = useGameStore((state) => state.players);
-  const channel = useGameStore((state) => state.channel);
-  const setLocked = useGameStore((state) => state.setLocked);
-  const setCrosshairSpread = useGameStore((state) => state.setCrosshairSpread);
+const LocalPlayer = () => {
+  const { localId, channel, players, setLocked, setCrosshairSpread } =
+    useGameStore();
 
   const lastEmit = useRef(0);
   const initialized = useRef(false);
@@ -292,4 +289,6 @@ export default function LocalPlayer() {
       onUnlock={() => setLocked(false)}
     />
   );
-}
+};
+
+export default LocalPlayer;

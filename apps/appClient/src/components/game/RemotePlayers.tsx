@@ -71,6 +71,7 @@ const HoverBotModel = ({
   const rightArmRef = useRef<THREE.Group>(null);
   const hoverRootRef = useRef<THREE.Group>(null);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { nodes, materials } = useGLTF(modelsBank.robot) as any;
 
   useFrame((_state, delta) => {
