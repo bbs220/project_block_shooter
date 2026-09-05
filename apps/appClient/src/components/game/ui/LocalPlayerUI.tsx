@@ -58,7 +58,7 @@ const LocalPlayerUI = () => {
               className="w-3 h-3 rounded-full border-[1.5px] border-black"
               style={{ backgroundColor: me.color }}
             />
-            <span className="text-xl font-black text-white tracking-wide uppercase [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]">
+            <span className="text-xl font-black text-white tracking-wide [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]">
               {me.name}
             </span>
           </div>
