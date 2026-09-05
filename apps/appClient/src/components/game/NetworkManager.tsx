@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { useGameStore } from "../../stores/useGameStore";
 
-export function NetworkManager() {
+const NetworkManager = () => {
   const setPlayers = useGameStore((state) => state.setPlayers);
   const setLocalId = useGameStore((state) => state.setLocalId);
   const setChannel = useGameStore((state) => state.setChannel);
@@ -59,4 +59,6 @@ export function NetworkManager() {
   }, [setPlayers, setLocalId, setChannel]);
 
   return null;
-}
+};
+
+export default NetworkManager;

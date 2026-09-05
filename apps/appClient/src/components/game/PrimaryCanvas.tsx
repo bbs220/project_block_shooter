@@ -1,6 +1,5 @@
 import { GRAVITY } from "@block-shooter/shared";
 import {
-  Environment,
   GizmoHelper,
   GizmoViewport,
   Loader,
@@ -9,25 +8,25 @@ import {
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
-import { useTweakpane } from "../../hooks/useTweakPane";
-import { FOV } from "../../utils/tunablesClient";
-import CrosshairUI from "./ui/CrosshairUI";
-import ArenaGeometry from "./ArenaGeometry";
-import KillFeedUI from "./ui/KillFeedUI";
-import LocalPlayer from "./LocalPlayer";
-import MatchTimerUI from "./ui/MatchTimerUI";
-import { NetworkManager } from "./NetworkManager";
-import PlayButtonUI from "./ui/PlayButtonUI";
-import RemotePlayers from "./RemotePlayers";
-import ScoreboardUI from "./ui/ScoreboardUI";
-import { SoundManager } from "./SoundManager";
-import WeaponViewmodel from "./WeaponViewModel";
-import AdsVignette from "./AdsVigette";
-import LocalPlayerUI from "./ui/LocalPlayerUI";
-import ControlsDisplayUI from "./ui/ControlsDisplayUI";
-import { useAppStore } from "../../stores/useAppStore";
 import { useEffect } from "react";
-import { skyboxBank } from "../../utils/assetPaths";
+import { useTweakpane } from "../../hooks/useTweakPane";
+import { useAppStore } from "../../stores/useAppStore";
+import { FOV } from "../../utils/tunablesClient";
+import AdsVignette from "./AdsVigette";
+import ArenaGeometry from "./ArenaGeometry";
+import LocalPlayer from "./LocalPlayer";
+import NetworkManager from "./NetworkManager";
+import RemotePlayers from "./RemotePlayers";
+import SkyBox from "./SkyBox";
+import SoundManager from "./SoundManager";
+import ControlsDisplayUI from "./ui/ControlsDisplayUI";
+import CrosshairUI from "./ui/CrosshairUI";
+import KillFeedUI from "./ui/KillFeedUI";
+import LocalPlayerUI from "./ui/LocalPlayerUI";
+import MatchTimerUI from "./ui/MatchTimerUI";
+import PlayButtonUI from "./ui/PlayButtonUI";
+import ScoreboardUI from "./ui/ScoreboardUI";
+import WeaponViewmodel from "./WeaponViewModel";
 
 const PrimaryScene = () => {
   const { showPhyDebug, showGizmo, showFPS } = useTweakpane(
@@ -50,17 +49,7 @@ const PrimaryScene = () => {
           <GizmoViewport labelColor="white" visible={showGizmo} />
         </GizmoHelper>
         <Stats showPanel={showFPS ? 0 : 4} />
-        <Environment
-          files={[
-            skyboxBank.day.px,
-            skyboxBank.day.nx,
-            skyboxBank.day.py,
-            skyboxBank.day.ny,
-            skyboxBank.day.pz,
-            skyboxBank.day.nz,
-          ]}
-          background
-        />
+        <SkyBox />
         <>
           {/* captures mouse and moves camera for local player */}
           <LocalPlayer />

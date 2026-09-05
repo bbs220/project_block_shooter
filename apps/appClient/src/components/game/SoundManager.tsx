@@ -3,7 +3,7 @@ import useSound from "use-sound";
 import { useGameStore } from "../../stores/useGameStore";
 import { soundBank } from "../../utils/assetPaths";
 
-export function SoundManager() {
+const SoundManager = () => {
   const channel = useGameStore((state) => state.channel);
   const localId = useGameStore((state) => state.localId);
 
@@ -41,4 +41,6 @@ export function SoundManager() {
   }, [channel, localId]);
 
   return null;
-}
+};
+
+export default SoundManager;

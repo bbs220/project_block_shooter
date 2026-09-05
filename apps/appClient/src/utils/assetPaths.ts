@@ -46,4 +46,20 @@ export const skyboxBank = {
     pz: "/images/daySkybox/pz.png",
     nz: "/images/daySkybox/nz.png",
   },
+  dawn: {
+    px: "/images/dawnSkybox/px.png",
+    nx: "/images/dawnSkybox/nx.png",
+    py: "/images/dawnSkybox/py.png",
+    ny: "/images/dawnSkybox/ny.png",
+    pz: "/images/dawnSkybox/pz.png",
+    nz: "/images/dawnSkybox/nz.png",
+  },
+  evening: {
+    px: "/images/eveningSkybox/px.png",
+    nx: "/images/eveningSkybox/nx.png",
+    py: "/images/eveningSkybox/py.png",
+    ny: "/images/eveningSkybox/ny.png",
+    pz: "/images/eveningSkybox/pz.png",
+    nz: "/images/eveningSkybox/nz.png",
+  },
 };
