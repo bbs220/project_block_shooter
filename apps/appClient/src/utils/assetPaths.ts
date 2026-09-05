@@ -30,22 +30,6 @@ export const modelsBank: Record<string, string> = {
 };
 
 export const skyboxBank = {
-  night: {
-    px: "/images/nightSkybox/px.png",
-    nx: "/images/nightSkybox/nx.png",
-    py: "/images/nightSkybox/py.png",
-    ny: "/images/nightSkybox/ny.png",
-    pz: "/images/nightSkybox/pz.png",
-    nz: "/images/nightSkybox/nz.png",
-  },
-  day: {
-    px: "/images/daySkybox/px.png",
-    nx: "/images/daySkybox/nx.png",
-    py: "/images/daySkybox/py.png",
-    ny: "/images/daySkybox/ny.png",
-    pz: "/images/daySkybox/pz.png",
-    nz: "/images/daySkybox/nz.png",
-  },
   dawn: {
     px: "/images/dawnSkybox/px.png",
     nx: "/images/dawnSkybox/nx.png",
@@ -54,6 +38,14 @@ export const skyboxBank = {
     pz: "/images/dawnSkybox/pz.png",
     nz: "/images/dawnSkybox/nz.png",
   },
+  afternoon: {
+    px: "/images/daySkybox/px.png",
+    nx: "/images/daySkybox/nx.png",
+    py: "/images/daySkybox/py.png",
+    ny: "/images/daySkybox/ny.png",
+    pz: "/images/daySkybox/pz.png",
+    nz: "/images/daySkybox/nz.png",
+  },
   evening: {
     px: "/images/eveningSkybox/px.png",
     nx: "/images/eveningSkybox/nx.png",
@@ -61,5 +53,13 @@ export const skyboxBank = {
     ny: "/images/eveningSkybox/ny.png",
     pz: "/images/eveningSkybox/pz.png",
     nz: "/images/eveningSkybox/nz.png",
+  },
+  night: {
+    px: "/images/nightSkybox/px.png",
+    nx: "/images/nightSkybox/nx.png",
+    py: "/images/nightSkybox/py.png",
+    ny: "/images/nightSkybox/ny.png",
+    pz: "/images/nightSkybox/pz.png",
+    nz: "/images/nightSkybox/nz.png",
   },
 };
