@@ -14,12 +14,12 @@ export const soundBank: Record<string, string> = {
   hit: "/sounds/hit_marker.mp3",
   kill: "/sounds/kill.mp3",
   thunder: "/sounds/thunder.mp3",
-  pistolFire: "/sounds/pistol_fire.mp3",
-  pistolReload: "/sounds/pistol_reload.mp3",
-  assaultRifleFire: "/sounds/assault_rifle_fire.mp3",
-  assaultRifleReload: "/sounds/assault_rifle_reload.mp3",
-  burstRifleFire: "/sounds/burst_rifle_fire.mp3",
-  burstRifleReload: "/sounds/burst_rifle_reload.mp3",
+  pistolFire: "/sounds/pistolFire.mp3",
+  pistolReload: "/sounds/pistolReload.mp3",
+  assaultRifleFire: "/sounds/assaultRifleFire.mp3",
+  assaultRifleReload: "/sounds/assaultRifleReload.mp3",
+  burstRifleFire: "/sounds/burstRifleFire.mp3",
+  burstRifleReload: "/sounds/burstRifleReload.mp3",
 };
 
 export const modelsBank: Record<string, string> = {
