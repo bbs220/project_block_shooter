@@ -14,6 +14,7 @@ import {
   useMagazineReload,
   useStrafeSway,
 } from "../../hooks/useWeaponAnimations";
+import MuzzleFlash from "./MuzzleFlash";
 
 // define weapon transform properties
 type WeaponTransform = {
@@ -67,6 +68,13 @@ const WEAPON_TRANSFORMS: Record<WeaponId, WeaponTransform> = {
     rotZ: 0,
     scale: 0.16,
   },
+};
+
+// map weapon identifiers to muzzle flash coordinates
+const MUZZLE_FLASH_POS: Record<WeaponId, [number, number, number]> = {
+  assaultRifle: [0, 0.1, -1.5],
+  burstRifle: [0, 0, -1.5],
+  pistol: [0, 0.15, -0.5],
 };
 
 export default function WeaponViewModel() {
@@ -198,6 +206,12 @@ export default function WeaponViewModel() {
     <group ref={groupRef} scale={[scale, scale, scale]}>
       {/* render the cloned weapon model */}
       <Clone ref={cloneRef} object={scene} />
+      {/* position the muzzle flash dynamically based on equipped weapon */}
+      <MuzzleFlash
+        position={
+          MUZZLE_FLASH_POS[currentWeapon] || MUZZLE_FLASH_POS.assaultRifle
+        }
+      />
     </group>
   );
 }
