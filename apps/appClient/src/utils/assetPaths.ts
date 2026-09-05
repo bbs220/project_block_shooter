@@ -28,3 +28,22 @@ export const modelsBank: Record<string, string> = {
   pistol: "/models/pistol_00.glb",
   robot: "/models/robot.glb",
 };
+
+export const skyboxBank = {
+  night: {
+    px: "/images/nightSkybox/px.png",
+    nx: "/images/nightSkybox/nx.png",
+    py: "/images/nightSkybox/py.png",
+    ny: "/images/nightSkybox/ny.png",
+    pz: "/images/nightSkybox/pz.png",
+    nz: "/images/nightSkybox/nz.png",
+  },
+  day: {
+    px: "/images/daySkybox/px.png",
+    nx: "/images/daySkybox/nx.png",
+    py: "/images/daySkybox/py.png",
+    ny: "/images/daySkybox/ny.png",
+    pz: "/images/daySkybox/pz.png",
+    nz: "/images/daySkybox/nz.png",
+  },
+};

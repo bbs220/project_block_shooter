@@ -1,10 +1,10 @@
 import { GRAVITY } from "@block-shooter/shared";
 import {
+  Environment,
   GizmoHelper,
   GizmoViewport,
   Loader,
   PerspectiveCamera,
-  Sky,
   Stats,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
@@ -27,6 +27,7 @@ import LocalPlayerUI from "./ui/LocalPlayerUI";
 import ControlsDisplayUI from "./ui/ControlsDisplayUI";
 import { useAppStore } from "../../stores/useAppStore";
 import { useEffect } from "react";
+import { skyboxBank } from "../../utils/assetPaths";
 
 const PrimaryScene = () => {
   const { showPhyDebug, showGizmo, showFPS } = useTweakpane(
@@ -49,12 +50,16 @@ const PrimaryScene = () => {
           <GizmoViewport labelColor="white" visible={showGizmo} />
         </GizmoHelper>
         <Stats showPanel={showFPS ? 0 : 4} />
-        <ambientLight intensity={1} color={"#ffffff"} />
-        <Sky
-          distance={450000}
-          sunPosition={[0, 1, 0]}
-          inclination={0}
-          azimuth={0.25}
+        <Environment
+          files={[
+            skyboxBank.day.px,
+            skyboxBank.day.nx,
+            skyboxBank.day.py,
+            skyboxBank.day.ny,
+            skyboxBank.day.pz,
+            skyboxBank.day.nz,
+          ]}
+          background
         />
         <>
           {/* captures mouse and moves camera for local player */}
