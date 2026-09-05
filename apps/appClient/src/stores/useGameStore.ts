@@ -6,8 +6,9 @@ export type WeaponType = "assaultRifle" | "pistol" | "burstRifle";
 export type TeamType = "red" | "blue" | "none";
 export type MatchState = "waiting" | "playing" | "ended";
 export type GameMode = "tdm";
+export type ConnectionStatus = "stable" | "disconnecting" | "disconnected";
 
-export interface PlayerState {
+export type PlayerState = {
   // identity
   name: string;
   color: string;
@@ -30,9 +31,9 @@ export interface PlayerState {
   currentWeapon: WeaponType;
   ammo: number;
   isReloading: boolean;
-}
+};
 
-export interface KillEvent {
+export type KillEvent = {
   id: string;
   shooter: string;
   target: string;
@@ -40,12 +41,15 @@ export interface KillEvent {
   shooterTeam: TeamType;
   targetTeam: TeamType;
   timestamp: number;
-}
+};
 
-export interface GameStore {
-  // network & identity
+export type GameStore = {
+  // network and identity
   localId: string | null;
   channel: Socket | null;
+  isConnected: boolean;
+  ping: number;
+  connectionStatus: ConnectionStatus;
 
   // global match state
   mode: GameMode;
@@ -59,9 +63,11 @@ export interface GameStore {
   // actions
   setLocalId: (id: string) => void;
   setChannel: (channel: Socket) => void;
+  setIsConnected: (connected: boolean) => void;
+  setPing: (ping: number) => void;
   setPlayers: (players: Record<string, PlayerState>) => void;
 
-  // generic updater for match info (time, scores, etc)
+  // generic updater for match info
   updateMatchData: (data: Partial<GameStore>) => void;
 
   // pseudo pause state
@@ -76,11 +82,14 @@ export interface GameStore {
   // dynamic crosshair
   crosshairSpread: number;
   setCrosshairSpread: (spread: number) => void;
-}
+};
 
 export const useGameStore = create<GameStore>((set) => ({
   localId: null,
   channel: null,
+  isConnected: false,
+  ping: 0,
+  connectionStatus: "disconnected",
 
   // default match state
   mode: "tdm",
@@ -93,6 +102,31 @@ export const useGameStore = create<GameStore>((set) => ({
   // setters
   setLocalId: (id) => set({ localId: id }),
   setChannel: (channel) => set({ channel }),
+
+  // automatically compute status when connection changes
+  setIsConnected: (connected) =>
+    set((state) => {
+      let status: ConnectionStatus = "stable";
+      if (!connected) {
+        status = "disconnected";
+      } else if (state.ping > 150) {
+        status = "disconnecting";
+      }
+      return { isConnected: connected, connectionStatus: status };
+    }),
+
+  // automatically compute status when ping changes
+  setPing: (ping) =>
+    set((state) => {
+      let status: ConnectionStatus = "stable";
+      if (!state.isConnected) {
+        status = "disconnected";
+      } else if (ping > 150) {
+        status = "disconnecting";
+      }
+      return { ping, connectionStatus: status };
+    }),
+
   setPlayers: (players) => set({ players }),
   updateMatchData: (data) => set((state) => ({ ...state, ...data })),
 
@@ -112,7 +146,7 @@ export const useGameStore = create<GameStore>((set) => ({
   removeOldKills: () =>
     set((state) => {
       const now = Date.now();
-      // Keep messages that are less than 5 seconds old
+      // keep messages that are less than five seconds old
       return {
         killFeed: state.killFeed.filter((k) => now - k.timestamp < 5000),
       };

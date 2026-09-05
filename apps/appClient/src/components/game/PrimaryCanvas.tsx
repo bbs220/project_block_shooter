@@ -27,6 +27,7 @@ import PlayButtonUI from "./ui/PlayButtonUI";
 import ScoreboardUI from "./ui/ScoreboardUI";
 import WeaponViewmodel from "./WeaponViewModel";
 import LoadingScreenUI from "./ui/LoadingScreenUI";
+import ConnectionStateUI from "./ui/ConnectionStateUI";
 
 const PrimaryScene = () => {
   const { showPhyDebug, showGizmo, showFPS } = useTweakpane(
@@ -105,6 +106,8 @@ const PrimaryCanvas = () => {
       <SoundManager />
       {/* loading ui */}
       <LoadingScreenUI />
+      {/* pings status */}
+      <ConnectionStateUI />
       {/* main viewport with black fallback background */}
       <Canvas
         shadows="variance"

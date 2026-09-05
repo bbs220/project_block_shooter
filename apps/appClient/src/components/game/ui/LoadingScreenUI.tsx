@@ -27,7 +27,7 @@ const LoadingScreenUI = () => {
 
   return (
     <div
-      className={`absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm pointer-events-none p-8 transition-opacity duration-1000 ease-in-out ${
+      className={`absolute inset-0 z-100 flex items-center justify-center bg-black/80 backdrop-blur-sm pointer-events-none p-8 transition-opacity duration-1000 ease-in-out ${
         fadingOut ? "opacity-0" : "opacity-100"
       }`}
     >
