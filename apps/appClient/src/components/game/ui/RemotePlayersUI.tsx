@@ -19,7 +19,7 @@ export default function RemotePlayersUI({ player }: { player: PlayerState }) {
           </span>
         </div>
 
-        <div className="flex gap-0.5">
+        <div className="flex gap-0.5 border-4 border-white/20">
           {Array.from({ length: healthSegments }).map((_, i) => {
             const isActive = i * (maxHealth / healthSegments) < displayHealth;
             const isLowHealth = displayHealth <= 30;
