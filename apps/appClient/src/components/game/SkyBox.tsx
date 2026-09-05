@@ -1,49 +1,58 @@
-import { Environment, useEnvironment } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
+import { useLoader } from "@react-three/fiber";
+import { useMemo } from "react";
+import * as THREE from "three";
 import { skyboxBank } from "../../utils/assetPaths";
 import { useTweakpane } from "../../hooks/useTweakPane";
-import { SRGBColorSpace } from "three";
 
-Object.values(skyboxBank).forEach((skybox) => {
-  useEnvironment.preload({
-    files: [skybox.px, skybox.nx, skybox.py, skybox.ny, skybox.pz, skybox.nz],
-    colorSpace: SRGBColorSpace,
-  });
-});
+// pre extract global keys and cubemap url arrays to prevent react from recreating them
+const skyboxKeys = Object.keys(skyboxBank);
+const skyboxUrlArrays = Object.values(skyboxBank).map((skybox) => [
+  skybox.px,
+  skybox.nx,
+  skybox.py,
+  skybox.ny,
+  skybox.pz,
+  skybox.nz,
+]);
+
+// auto generate the tweakpane dropdown options directly from the asset bank
+const skyboxOptions = skyboxKeys.reduce(
+  (acc, key) => {
+    acc[key] = key;
+    return acc;
+  },
+  {} as Record<string, string>,
+);
 
 const SkyBox = () => {
+  // auto load and cache all skybox cubemaps simultaneously using the native threejs loader
+  const envTextures = useLoader(THREE.CubeTextureLoader, skyboxUrlArrays);
+
+  // strictly apply correct color space to all loaded textures
+  useMemo(() => {
+    envTextures.forEach((tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace;
+    });
+  }, [envTextures]);
+
+  // configure debug tools with dynamic dropdown options
   const { timeOfDay } = useTweakpane(
     { title: "🏞️ Scene" },
     {
       timeOfDay: {
         value: "afternoon",
-        options: {
-          dawn: "dawn",
-          afternoon: "afternoon",
-          evening: "evening",
-          night: "night",
-        },
         label: "time of day",
+        options: skyboxOptions,
       },
     },
   );
 
-  // map the selection to the corresponding texture bank
-  const currentSkybox = skyboxBank[timeOfDay as keyof typeof skyboxBank];
+  // find the index of the currently selected environment to apply the correct texture
+  const activeIndex = skyboxKeys.indexOf(timeOfDay as string);
+  const activeSkyMap = envTextures[activeIndex];
 
-  return (
-    <Environment
-      key={timeOfDay}
-      files={[
-        currentSkybox.px,
-        currentSkybox.nx,
-        currentSkybox.py,
-        currentSkybox.ny,
-        currentSkybox.pz,
-        currentSkybox.nz,
-      ]}
-      background
-    />
-  );
+  return <Environment map={activeSkyMap} background />;
 };
 
 export default SkyBox;
