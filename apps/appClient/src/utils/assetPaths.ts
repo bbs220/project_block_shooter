@@ -14,12 +14,12 @@ export const soundBank: Record<string, string> = {
   hit: "/sounds/hit_marker.mp3",
   kill: "/sounds/kill.mp3",
   thunder: "/sounds/thunder.mp3",
-  pistolFire: "/sounds/pistol_fire.mp3",
-  pistolReload: "/sounds/pistol_reload.mp3",
-  assaultRifleFire: "/sounds/assault_rifle_fire.mp3",
-  assaultRifleReload: "/sounds/assault_rifle_reload.mp3",
-  burstRifleFire: "/sounds/burst_rifle_fire.mp3",
-  burstRifleReload: "/sounds/burst_rifle_reload.mp3",
+  pistolFire: "/sounds/pistolFire.mp3",
+  pistolReload: "/sounds/pistolReload.mp3",
+  assaultRifleFire: "/sounds/assaultRifleFire.mp3",
+  assaultRifleReload: "/sounds/assaultRifleReload.mp3",
+  burstRifleFire: "/sounds/burstRifleFire.mp3",
+  burstRifleReload: "/sounds/burstRifleReload.mp3",
 };
 
 export const modelsBank: Record<string, string> = {
@@ -27,4 +27,39 @@ export const modelsBank: Record<string, string> = {
   burstRifle: "/models/burst_rifle_00.glb",
   pistol: "/models/pistol_00.glb",
   robot: "/models/robot.glb",
+};
+
+export const skyboxBank = {
+  dawn: {
+    px: "/images/dawnSkybox/px.png",
+    nx: "/images/dawnSkybox/nx.png",
+    py: "/images/dawnSkybox/py.png",
+    ny: "/images/dawnSkybox/ny.png",
+    pz: "/images/dawnSkybox/pz.png",
+    nz: "/images/dawnSkybox/nz.png",
+  },
+  afternoon: {
+    px: "/images/daySkybox/px.png",
+    nx: "/images/daySkybox/nx.png",
+    py: "/images/daySkybox/py.png",
+    ny: "/images/daySkybox/ny.png",
+    pz: "/images/daySkybox/pz.png",
+    nz: "/images/daySkybox/nz.png",
+  },
+  evening: {
+    px: "/images/eveningSkybox/px.png",
+    nx: "/images/eveningSkybox/nx.png",
+    py: "/images/eveningSkybox/py.png",
+    ny: "/images/eveningSkybox/ny.png",
+    pz: "/images/eveningSkybox/pz.png",
+    nz: "/images/eveningSkybox/nz.png",
+  },
+  night: {
+    px: "/images/nightSkybox/px.png",
+    nx: "/images/nightSkybox/nx.png",
+    py: "/images/nightSkybox/py.png",
+    ny: "/images/nightSkybox/ny.png",
+    pz: "/images/nightSkybox/pz.png",
+    nz: "/images/nightSkybox/nz.png",
+  },
 };

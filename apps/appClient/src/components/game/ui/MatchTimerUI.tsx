@@ -23,14 +23,14 @@ const MatchTimerUI = () => {
   return (
     <div className="absolute top-0 left-1/2 -translate-x-1/2 p-2 z-10 pointer-events-none drop-shadow-xl flex flex-col items-center">
       {/* Top Badge: Game Mode */}
-      <div className="bg-black/60 backdrop-blur-md px-6 py-1 rounded-t-lg border border-white/10 border-b-0 shadow-inner">
+      <div className="bg-black/60 backdrop-blur-md px-6 py-1 border-4 border-white/20 border-b-0 shadow-inner">
         <span className="text-neutral-300 text-xs font-black tracking-[0.2em] uppercase">
           {modeName}
         </span>
       </div>
 
       {/* Main Bar: Scores & Timer */}
-      <div className="flex items-center bg-black/80 backdrop-blur-md rounded-b-lg rounded-t-sm border border-white/10 overflow-hidden shadow-2xl">
+      <div className="flex items-center bg-black/80 backdrop-blur-md border-4 border-white/20 overflow-hidden shadow-2xl">
         {/* Red Team Score */}
         <div className="bg-red-600/20 px-6 py-2 flex items-center justify-center min-w-20 border-r border-red-500/30">
           <span className="text-red-400 font-black text-2xl tabular-nums">

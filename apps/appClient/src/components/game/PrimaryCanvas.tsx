@@ -2,31 +2,32 @@ import { GRAVITY } from "@block-shooter/shared";
 import {
   GizmoHelper,
   GizmoViewport,
-  Loader,
   PerspectiveCamera,
-  Sky,
   Stats,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
+import { useEffect, Suspense } from "react";
 import { useTweakpane } from "../../hooks/useTweakPane";
-import { FOV } from "../../utils/tunablesClient";
-import CrosshairUI from "./ui/CrosshairUI";
-import ArenaGeometry from "./ArenaGeometry";
-import KillFeedUI from "./ui/KillFeedUI";
-import LocalPlayer from "./LocalPlayer";
-import MatchTimerUI from "./ui/MatchTimerUI";
-import { NetworkManager } from "./NetworkManager";
-import PlayButtonUI from "./ui/PlayButtonUI";
-import RemotePlayers from "./RemotePlayers";
-import ScoreboardUI from "./ui/ScoreboardUI";
-import { SoundManager } from "./SoundManager";
-import WeaponViewmodel from "./WeaponViewModel";
-import AdsVignette from "./AdsVigette";
-import LocalPlayerUI from "./ui/LocalPlayerUI";
-import ControlsDisplayUI from "./ui/ControlsDisplayUI";
 import { useAppStore } from "../../stores/useAppStore";
-import { useEffect } from "react";
+import { FOV } from "../../utils/tunablesClient";
+import AdsVignette from "./AdsVigette";
+import ArenaGeometry from "./ArenaGeometry";
+import LocalPlayer from "./LocalPlayer";
+import NetworkManager from "./NetworkManager";
+import RemotePlayers from "./RemotePlayers";
+import SkyBox from "./SkyBox";
+import SoundManager from "./SoundManager";
+import ControlsDisplayUI from "./ui/ControlsDisplayUI";
+import CrosshairUI from "./ui/CrosshairUI";
+import KillFeedUI from "./ui/KillFeedUI";
+import LocalPlayerUI from "./ui/LocalPlayerUI";
+import MatchTimerUI from "./ui/MatchTimerUI";
+import PlayButtonUI from "./ui/PlayButtonUI";
+import ScoreboardUI from "./ui/ScoreboardUI";
+import WeaponViewmodel from "./WeaponViewModel";
+import LoadingScreenUI from "./ui/LoadingScreenUI";
+import ConnectionStateUI from "./ui/ConnectionStateUI";
 
 const PrimaryScene = () => {
   const { showPhyDebug, showGizmo, showFPS } = useTweakpane(
@@ -49,17 +50,11 @@ const PrimaryScene = () => {
           <GizmoViewport labelColor="white" visible={showGizmo} />
         </GizmoHelper>
         <Stats showPanel={showFPS ? 0 : 4} />
-        <ambientLight intensity={1} color={"#ffffff"} />
-        <Sky
-          distance={450000}
-          sunPosition={[0, 1, 0]}
-          inclination={0}
-          azimuth={0.25}
-        />
+        <SkyBox />
         <>
           {/* captures mouse and moves camera for local player */}
           <LocalPlayer />
-          {/* render all players EXCEPT the local one */}
+          {/* render all players except the local one */}
           <RemotePlayers />
           {/* something to stand on */}
           <ArenaGeometry />
@@ -71,6 +66,19 @@ const PrimaryScene = () => {
 
 const PrimaryCanvas = () => {
   const { setActivePage } = useAppStore();
+
+  const { setDpr } = useTweakpane(
+    { title: "🏞️ Scene" },
+    {
+      setDpr: {
+        value: 1,
+        min: 0.1,
+        max: 1,
+        step: 0.1,
+        label: "resolution scale",
+      },
+    },
+  );
 
   useEffect(() => {
     setActivePage("ingame");
@@ -92,21 +100,28 @@ const PrimaryCanvas = () => {
       <KillFeedUI />
       {/* stuff like health and ammo */}
       <LocalPlayerUI />
-      {/* network manager runs silently outside the 3d canvas */}
+      {/* network manager runs silently outside the canvas */}
       <NetworkManager />
-      {/* responsible for all 2d and ui sounds */}
+      {/* responsible for all sounds */}
       <SoundManager />
-      {/* main 3d viewport */}
-      <Canvas shadows="variance" dpr={1}>
-        <PrimaryScene />
-        <AdsVignette />
+      {/* loading ui */}
+      <LoadingScreenUI />
+      {/* pings status */}
+      <ConnectionStateUI />
+      {/* main viewport with black fallback background */}
+      <Canvas
+        shadows="variance"
+        dpr={setDpr}
+        style={{ backgroundColor: "black" }}
+      >
+        {/* force scene background to black instantly */}
+        <color attach="background" args={["black"]} />
+        {/* group async loading to prevent individual component flashing */}
+        <Suspense fallback={null}>
+          <PrimaryScene />
+          <AdsVignette />
+        </Suspense>
       </Canvas>
-      {/* loading screen */}
-      <Loader
-        containerStyles={{ backgroundColor: "#171717" }}
-        innerStyles={{ width: "300px" }}
-        barStyles={{ backgroundColor: "#3b82f6" }}
-      />
     </>
   );
 };

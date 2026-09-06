@@ -33,7 +33,7 @@ const ScoreboardUI = () => {
     };
   }, []);
 
-  // show if actively playing AND holding tab, OR if the match has officially ended
+  // show if actively playing and holding tab or if the match has officially ended
   const shouldShow = (isHoldingTab && isLocked) || matchState === "ended";
   if (!shouldShow) return null;
 
@@ -43,7 +43,7 @@ const ScoreboardUI = () => {
     ...data,
   }));
 
-  // sort players by kills (highest first)
+  // sort players by kills highest first
   const redTeam = allPlayers
     .filter((p) => p.team === "red")
     .sort((a, b) => b.kills - a.kills);
@@ -52,26 +52,24 @@ const ScoreboardUI = () => {
     .filter((p) => p.team === "blue")
     .sort((a, b) => b.kills - a.kills);
 
-  // helper to render a team's table
+  // helper to render team table
   const renderTeamTable = (
     teamName: string,
     teamPlayers: typeof allPlayers,
-    colorClass: string,
+    borderColor: string,
+    textColor: string,
   ) => {
-    // Calculate how many empty rows we need to reach exactly 4 slots
+    // calculate how many empty rows we need to reach exactly four slots
     const emptySlotsCount = Math.max(0, 4 - teamPlayers.length);
     const emptySlots = Array.from({ length: emptySlotsCount });
 
     return (
       <div className="w-full md:w-1/2 p-2">
         <div
-          className={`bg-black/60 border-t-4 ${colorClass} rounded-b-lg backdrop-blur-md overflow-hidden`}
+          className={`bg-black/60 border-t-4 ${borderColor} backdrop-blur-md overflow-hidden`}
         >
           <h3
-            className={`text-center font-black tracking-widest uppercase py-2 ${colorClass.replace(
-              "border",
-              "text",
-            )}`}
+            className={`text-center font-black tracking-widest uppercase py-2 ${textColor}`}
           >
             {teamName} Team
           </h3>
@@ -86,7 +84,7 @@ const ScoreboardUI = () => {
               </tr>
             </thead>
             <tbody>
-              {/* Render active players */}
+              {/* render active players */}
               {teamPlayers.map((p) => {
                 const kd = (p.kills / Math.max(1, p.deaths)).toFixed(2);
                 const isMe = p.id === localId;
@@ -115,8 +113,7 @@ const ScoreboardUI = () => {
                   </tr>
                 );
               })}
-
-              {/* Render empty waiting slots to maintain fixed UI height */}
+              {/* render empty waiting slots to maintain fixed ui height */}
               {emptySlots.map((_, index) => (
                 <tr
                   key={`empty-${index}`}
@@ -126,7 +123,7 @@ const ScoreboardUI = () => {
                     colSpan={4}
                     className="px-4 py-2 text-center text-neutral-600 italic"
                   >
-                    waiting for player...
+                    waiting for player
                   </td>
                 </tr>
               ))}
@@ -139,9 +136,9 @@ const ScoreboardUI = () => {
 
   return (
     <div className="absolute inset-0 z-40 flex items-center justify-center p-8 pointer-events-none">
-      <div className="w-full max-w-4xl flex flex-col md:flex-row gap-4 bg-black/40 p-4 rounded-xl backdrop-blur-sm shadow-2xl">
-        {renderTeamTable("Red", redTeam, "border-red-500")}
-        {renderTeamTable("Blue", blueTeam, "border-blue-500")}
+      <div className="w-full max-w-4xl flex flex-col md:flex-row gap-4 bg-black/40 p-4 backdrop-blur-sm shadow-2xl">
+        {renderTeamTable("Red", redTeam, "border-red-500", "text-red-500")}
+        {renderTeamTable("Blue", blueTeam, "border-blue-500", "text-blue-500")}
       </div>
     </div>
   );

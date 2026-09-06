@@ -35,7 +35,7 @@ const LocalPlayerUI = () => {
     <div className="absolute inset-0 pointer-events-none p-4 flex flex-col justify-end z-10">
       <div className="flex justify-between items-end w-full">
         <div className="flex flex-col gap-2">
-          <div className="flex gap-1">
+          <div className="flex gap-1 border-4 border-white/20">
             {Array.from({ length: healthSegments }).map((_, i) => {
               const isActive = i * (maxHealth / healthSegments) < displayHealth;
               const isLowHealth = displayHealth <= 30;
@@ -58,7 +58,7 @@ const LocalPlayerUI = () => {
               className="w-3 h-3 rounded-full border-[1.5px] border-black"
               style={{ backgroundColor: me.color }}
             />
-            <span className="text-xl font-black text-white tracking-wide uppercase [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]">
+            <span className="text-xl font-black text-white tracking-wide [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000]">
               {me.name}
             </span>
           </div>

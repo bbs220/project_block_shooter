@@ -80,29 +80,41 @@ async function startServer() {
     logger.info(`🚀 server is live`);
   });
 
-  // handle terminal interrupt
-  process.on("SIGTERM", () => {
+  // unified teardown sequence
+  const gracefulShutdown = (signal: string) => {
+    // drop all socket connections
     io.close();
+
+    // forcefully severe all lingering http keep-alive connections
+    expressServer.closeAllConnections();
+
+    // attempt graceful express shutdown
     expressServer.close(() => {
-      process.exit();
+      if (signal === "SIGUSR2") {
+        process.kill(process.pid, "SIGUSR2");
+      } else {
+        process.exit(0);
+      }
     });
-  });
+
+    // absolute failsafe timeout if the server refuses to die
+    setTimeout(() => {
+      if (signal === "SIGUSR2") {
+        process.kill(process.pid, "SIGUSR2");
+      } else {
+        process.exit(1);
+      }
+    }, 1500).unref();
+  };
+
+  // handle terminal interrupt
+  process.once("SIGTERM", () => gracefulShutdown("SIGTERM"));
 
   // handle terminal stop
-  process.on("SIGINT", () => {
-    io.close();
-    expressServer.close(() => {
-      process.exit();
-    });
-  });
+  process.once("SIGINT", () => gracefulShutdown("SIGINT"));
 
   // handle nodemon restart signal
-  process.once("SIGUSR2", () => {
-    io.close();
-    expressServer.close(() => {
-      process.kill(process.pid, "SIGUSR2");
-    });
-  });
+  process.once("SIGUSR2", () => gracefulShutdown("SIGUSR2"));
 
   io.on("connection", (socket) => {
     if (!socket.id) return;

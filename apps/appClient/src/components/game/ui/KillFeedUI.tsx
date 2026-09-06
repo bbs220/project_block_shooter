@@ -48,7 +48,7 @@ const KillFeedItem = ({ kill }: { kill: KillEvent }) => {
   return (
     <div
       ref={containerRef}
-      className="bg-black/60 px-4 py-2 rounded-lg border border-white/10 shadow-lg text-sm font-bold flex items-center gap-2"
+      className="bg-black/60 px-4 py-2 border-4 border-white/20 shadow-lg text-sm font-bold flex items-center gap-2"
     >
       <span
         className={

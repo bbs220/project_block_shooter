@@ -2,18 +2,18 @@ import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { useGameStore } from "../../stores/useGameStore";
 
-export function NetworkManager() {
-  const setPlayers = useGameStore((state) => state.setPlayers);
-  const setLocalId = useGameStore((state) => state.setLocalId);
-  const setChannel = useGameStore((state) => state.setChannel);
+const NetworkManager = () => {
+  const { setChannel, setLocalId, setIsConnected, setPing, setPlayers } =
+    useGameStore();
 
   useEffect(() => {
     const isProd = import.meta.env.PROD;
-    // In production, undefined forces socket.io to connect to the window's exact origin (Render's 443).
-    // In development, it connects to the local Node server port.
+
+    // in production undefined forces socket to connect to the window origin
+    // in development it connects to the local server port
     const socketUrl = isProd ? undefined : "http://localhost:9208";
 
-    // initialize socket.io connection
+    // initialize socket connection
     const socket = io(socketUrl);
 
     socket.on("connect_error", (error) => {
@@ -25,18 +25,38 @@ export function NetworkManager() {
         `connected to server ${isProd ? "in production" : "at " + socketUrl}!`,
       );
 
-      // store the local client id and the channel globally
+      // mark connection as active
+      setIsConnected(true);
+
+      // store local client id and channel globally
       if (socket.id) {
         setLocalId(socket.id);
         setChannel(socket);
       }
     });
 
-    // update zustand with authoritative server state
+    // mark connection as inactive
+    socket.on("disconnect", () => {
+      setIsConnected(false);
+    });
+
+    // request acknowledgment from server to measure round trip time
+    const pingInterval = setInterval(() => {
+      if (socket.connected) {
+        const start = Date.now();
+
+        socket.emit("ping", () => {
+          const latency = Date.now() - start;
+          setPing(latency);
+        });
+      }
+    }, 1000);
+
+    // update store with authoritative server state
     socket.on("state", (data) => {
       const { players, ...matchInfo } = data;
 
-      // sync using the two separate zustand setters
+      // sync using separate store setters
       useGameStore.getState().setPlayers(players);
       useGameStore.getState().updateMatchData(matchInfo);
     });
@@ -49,14 +69,19 @@ export function NetworkManager() {
     });
 
     return () => {
-      // catch strict mode unmounts before webrtc is ready
+      // clear interval before disconnecting
+      clearInterval(pingInterval);
+
+      // catch strict mode unmounts before connection is ready
       try {
         socket.disconnect();
       } catch (err) {
         console.warn("socket cleanup bypassed during strict mode remount", err);
       }
     };
-  }, [setPlayers, setLocalId, setChannel]);
+  }, [setPlayers, setLocalId, setChannel, setIsConnected, setPing]);
 
   return null;
-}
+};
+
+export default NetworkManager;

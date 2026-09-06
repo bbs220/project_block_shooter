@@ -14,12 +14,12 @@ export default function RemotePlayersUI({ player }: { player: PlayerState }) {
             className="w-2 h-2 rounded-full border border-black"
             style={{ backgroundColor: player.color }}
           />
-          <span className="text-white text-[10px] font-black tracking-wide uppercase [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000] whitespace-nowrap">
+          <span className="text-white text-[10px] font-black tracking-wide [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000] whitespace-nowrap">
             {player.name}
           </span>
         </div>
 
-        <div className="flex gap-0.5">
+        <div className="flex gap-0.5 border-4 border-white/20">
           {Array.from({ length: healthSegments }).map((_, i) => {
             const isActive = i * (maxHealth / healthSegments) < displayHealth;
             const isLowHealth = displayHealth <= 30;
