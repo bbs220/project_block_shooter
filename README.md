@@ -1,5 +1,5 @@
 # 🔫 Block Shooter MVP
-
+[![deploy pipeline](https://github.com/bbs220/project_block_shooter/actions/workflows/deploy.yaml/badge.svg)](https://github.com/bbs220/project_block_shooter/actions/workflows/deploy.yaml)
 ## Play it [here](https://project-block-shooter.onrender.com/)!
 
 A low-poly, 8-player multiplayer arena FPS built with React Three Fiber and a server-authoritative Node.js backend.
