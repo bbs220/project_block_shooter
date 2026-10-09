@@ -1,0 +1,14 @@
+# Block Shooter
+
+> A procedural multiplayer block shooter game.
+
+## Features
+
+- Procedural Arena Geometry
+- Multiplayer (WebRTC / WebSockets)
+- Physics-based gameplay
+- GLTF Models
+- Sound effects
+
+This file contains the complete markdown content for the site.
+
