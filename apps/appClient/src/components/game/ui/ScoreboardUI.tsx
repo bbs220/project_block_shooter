@@ -75,12 +75,21 @@ const ScoreboardUI = () => {
           </h3>
 
           <table className="w-full text-sm text-left text-white">
+            <caption className="sr-only">{teamName} Team Scoreboard</caption>
             <thead className="bg-white/10 uppercase text-xs text-neutral-300">
               <tr>
-                <th className="px-4 py-2 w-1/2">player</th>
-                <th className="px-4 py-2 text-center">k</th>
-                <th className="px-4 py-2 text-center">d</th>
-                <th className="px-4 py-2 text-center">k/d</th>
+                <th scope="col" className="px-4 py-2 w-1/2">
+                  player
+                </th>
+                <th scope="col" className="px-4 py-2 text-center">
+                  k
+                </th>
+                <th scope="col" className="px-4 py-2 text-center">
+                  d
+                </th>
+                <th scope="col" className="px-4 py-2 text-center">
+                  k/d
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -96,13 +105,16 @@ const ScoreboardUI = () => {
                       isMe ? "bg-white/10 font-bold" : ""
                     }`}
                   >
-                    <td className="px-4 py-2 flex items-center gap-2">
+                    <th
+                      scope="row"
+                      className="px-4 py-2 flex items-center gap-2 font-normal text-left"
+                    >
                       <div
                         className="w-3 h-3 rounded-full shadow-sm"
                         style={{ backgroundColor: p.color }}
                       />
                       {p.name} {isMe && "(You)"}
-                    </td>
+                    </th>
                     <td className="px-4 py-2 text-center">{p.kills}</td>
                     <td className="px-4 py-2 text-center text-neutral-400">
                       {p.deaths}
