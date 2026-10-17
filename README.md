@@ -1,5 +1,5 @@
 # 🔫 Block Shooter MVP
-
+[![deploy pipeline](https://github.com/bbs220/project_block_shooter/actions/workflows/deploy.yaml/badge.svg)](https://github.com/bbs220/project_block_shooter/actions/workflows/deploy.yaml)
 ## Play it [here](https://project-block-shooter.onrender.com/)!
 
 A low-poly, 8-player multiplayer arena FPS built with React Three Fiber and a server-authoritative Node.js backend.
@@ -80,27 +80,7 @@ The project is containerized into a single production-ready Docker image:
 - **CI/CD Pipeline**: Merges to `main` trigger a GitHub Actions workflow that builds the Docker image, pushes to GitHub Container Registry (`ghcr.io`), and calls the Render deploy hook.
 
 ## 🚀 Getting Started
-
-### Local Development
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-   *(Installs dependencies for all workspaces and configures package symlinks).*
-
-2. **Run both server and client**:
-   ```bash
-   npm run dev
-   ```
-   - Client dev server: `http://localhost:5173`
-   - Server API / Socket: `http://localhost:9208`
-
-### Docker
-1. **Build image**:
-   ```bash
-   docker build -t block-shooter .
-   ```
-2. **Run container**:
-   ```bash
-   docker run -p 9208:9208 block-shooter
-   ```
+1. **Install dependencies**: 
+   `npm install` installs deps for both server and client.
+2. **Run the project**: 
+   `npm run dev` runs both server and client.
