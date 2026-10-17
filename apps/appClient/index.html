@@ -2,7 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon/gun.png" />
+    <meta name="theme-color" content="#171717" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+
+    <link rel="canonical" href="https://project-block-shooter.onrender.com/" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/gun.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <link rel="help" href="/llms.txt" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,9 +44,36 @@
     />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="600" />
+
+    <!-- Structured Data (JSON-LD) for Search Engines & AI Agents -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "Block Shooter",
+        "description": "A low-poly, 8-player multiplayer arena FPS built with React Three Fiber and a server-authoritative Node.js backend.",
+        "genre": ["Action", "First-person shooter", "Multiplayer"],
+        "playMode": "MultiPlayer",
+        "applicationCategory": "Game",
+        "operatingSystem": "Any",
+        "url": "https://project-block-shooter.onrender.com/",
+        "image": "https://project-block-shooter.onrender.com/images/thumbnails/thumbnail_1200x600.png",
+        "author": {
+          "@type": "Person",
+          "name": "bbs220"
+        }
+      }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <noscript>
+        <div style="font-family: sans-serif; text-align: center; padding: 2rem; background: #171717; color: #ffffff;">
+          <h1>Block Shooter</h1>
+          <p>A fast-paced multiplayer FPS built with React Three Fiber. Please enable JavaScript to play.</p>
+        </div>
+      </noscript>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
