@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 
+Sitemap: https://project-block-shooter.onrender.com/sitemap.xml
