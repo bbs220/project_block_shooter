@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+# explicitly force GitHub Actions to use Node.js 24 for all JavaScript actions
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build-and-push:
     # ensure the pull request was merged and not simply closed
@@ -18,11 +22,11 @@ jobs:
     steps:
       # checkout repository
       - name: checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # login to github container registry
       - name: authenticate registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -31,13 +35,13 @@ jobs:
       # extract lowercase metadata for docker
       - name: extract metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}
 
       # build and push docker image
       - name: build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
