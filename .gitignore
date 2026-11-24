@@ -10,6 +10,10 @@ node_modules/
 .env.test.local
 .env.production.local
 *.local
+AGENTS.md
+agents.md
+[aA][gG][eE][nN][tT][sS].[mM][dD]
+*[aA][gG][eE][nN][tT][sS]*.[mM][dD]
 
 # Production Builds & Frameworks
 dist/
