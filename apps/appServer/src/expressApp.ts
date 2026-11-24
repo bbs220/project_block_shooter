@@ -44,7 +44,7 @@ if (process.env.NODE_ENV === "production") {
   const validClientRoutes = new Set(["/", "/play"]);
 
   // Catch-all route for SPA routing with correct HTTP status codes to prevent soft 404s
-  expressApp.get("*", (req: Request, res: Response) => {
+  expressApp.get("/{*splat}", (req: Request, res: Response) => {
     if (validClientRoutes.has(req.path)) {
       res.status(200).sendFile(path.join(clientDistPath, "index.html"));
     } else {
