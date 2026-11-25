@@ -1,4 +1,5 @@
 Contact: mailto:backgroundruns@gmail.com
 Expires: 2030-01-01T00:00:00Z
 Preferred-Languages: en
+Canonical: https://project-block-shooter.onrender.com/.well-known/security.txt
 

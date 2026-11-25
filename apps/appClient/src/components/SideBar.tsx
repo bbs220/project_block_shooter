@@ -1,6 +1,7 @@
 import { X, Keyboard, LogOut, Menu } from "lucide-react";
 import { useAppStore } from "../stores/useAppStore";
 import { Link } from "react-router";
+import { useEffect } from "react";
 
 const SideBar = () => {
   const {
@@ -11,10 +12,24 @@ const SideBar = () => {
     appVersion,
   } = useAppStore();
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isSidebarOpen) {
+        toggleSidebar();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isSidebarOpen, toggleSidebar]);
+
   return (
     <div className="z-50">
       <button
         onClick={toggleSidebar}
+        aria-expanded={isSidebarOpen}
+        aria-controls="settings-sidebar"
+        aria-label={isSidebarOpen ? "close settings menu" : "open settings menu"}
         className="fixed top-4 left-4 z-60 p-3 bg-black/60 border-2 border-white/20 hover:border-white hover:bg-white/10 text-gray-400 hover:text-white transition-all duration-300 cursor-pointer backdrop-blur-sm group"
       >
         {isSidebarOpen ? (
@@ -40,6 +55,8 @@ const SideBar = () => {
       />
 
       <aside
+        id="settings-sidebar"
+        aria-label="Settings"
         className={`fixed top-0 left-0 h-screen w-72 sm:w-80 bg-neutral-900/95 border-r-4 border-white/20 z-50 flex flex-col font-mono transform transition-transform duration-300 ease-out shadow-2xl ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
@@ -53,6 +70,9 @@ const SideBar = () => {
         <div className="flex flex-col flex-1 p-4 gap-2 overflow-y-auto">
           <button
             onClick={() => setShowControls(!showControls)}
+            role="switch"
+            aria-checked={showControls}
+            aria-label="Toggle game controls display"
             className="flex items-center justify-between w-full p-4 border-l-4 transition-all duration-200 uppercase font-black tracking-widest text-sm cursor-pointer group border-transparent hover:border-white bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white"
           >
             <div className="flex items-center gap-4">
