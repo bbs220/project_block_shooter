@@ -42,6 +42,7 @@ The `@block-shooter/shared` package serves as the immutable single source of tru
 | :--- | :--- |
 | **Framework** | React 19, React Router v7 |
 | **3D Engine** | React Three Fiber (R3F), @react-three/drei, @react-three/rapier |
+| **Typography** | @fontsource/inter (Self-hosted WOFF2 fonts) |
 | **State** | Zustand |
 | **Styling** | Tailwind CSS v4 |
 | **Utilities** | Lucide-React, Tweakpane, use-sound |
@@ -51,7 +52,7 @@ The `@block-shooter/shared` package serves as the immutable single source of tru
 | :--- | :--- |
 | **Networking** | Socket.io (TCP) |
 | **Physics** | @dimforge/rapier3d-compat (Headless WASM engine) |
-| **Framework** | Express (Unified static client serving & WebSocket attachment) |
+| **Framework** | Express 5 (HTTP compression, strict CSP, static serving & WebSockets) |
 | **Logging** | Pino, Pino-Pretty |
 | **Runtime** | Node.js with TypeScript (tsx / tsup) |
 
@@ -59,8 +60,8 @@ The `@block-shooter/shared` package serves as the immutable single source of tru
 | Tool | Description |
 | :--- | :--- |
 | **Workspace** | npm workspaces (monorepo dependency orchestration & symlinks) |
-| **Containerization** | Docker (`node:22-alpine` multi-workspace image) |
-| **CI/CD** | GitHub Actions (Docker build, push to GitHub Packages / GHCR) |
+| **Containerization** | Docker (`node:24-slim` Debian-based multi-workspace image) |
+| **CI/CD** | GitHub Actions (Automated Docker build on Node 24, push to ghcr.io) |
 | **Hosting** | Render (Web Service deployed via automated webhook) |
 
 ## ✨ Core Features
@@ -70,14 +71,18 @@ The `@block-shooter/shared` package serves as the immutable single source of tru
 - 🕒 **Match Structure**: 4-minute rounds with automated respawn logic and team auto-balancing (4v4).
 - 🔫 **Weapon System**: Rifle and pistol with independent magazine tracking, fire rate throttling, and tactical reloading.
 - 🌐 **Unified Production Deployment**: In production, Express hosts both the compiled Vite SPA (`appClient/dist`) and the Socket.io WebSocket server on a single exposed port.
+- 🔒 **Hardened Web Standards & Security**: Built with strict CSP (`'wasm-unsafe-eval'`, blob/data fetching), COOP window isolation, immutable static asset caching, Gzip/Brotli compression, and self-hosted WOFF2 fonts.
+- ♿ **Accessibility & Graphics Resilience**: Native skip links, keyboard drawer isolation (`inert`), ARIA roles, prefers-reduced-motion queries, and React Error Boundaries for 3D WebGL context recovery.
 
 ## 🐳 Docker & Deployment
 
 The project is containerized into a single production-ready Docker image:
+- **Base Image**: Uses Debian-based `node:24-slim` for standard glibc support, regular 8MB thread stacks, and Node 24 runtime parity.
 - **Layer Caching**: Root manifest files are copied first to cache `npm install` across all workspaces.
 - **Full-Stack Build**: Compiles both the client Vite bundle and the server TypeScript code inside the container.
+- **Environment Guarantee**: Locks `ENV NODE_ENV=production` directly at runtime to ensure static client assets are served reliably.
 - **Single Port**: Express serves both frontend static assets and backend WebSockets on port `9208` (dynamically overridden by cloud environments via `PORT`).
-- **CI/CD Pipeline**: Merges to `main` trigger a GitHub Actions workflow that builds the Docker image, pushes to GitHub Container Registry (`ghcr.io`), and calls the Render deploy hook.
+- **CI/CD Pipeline**: Merges to `main` trigger a GitHub Actions workflow using native Node 24 action versions that builds the Docker image, pushes to GitHub Container Registry (`ghcr.io`), and triggers the Render deploy hook.
 
 ## 🚀 Getting Started
 1. **Install dependencies**: 

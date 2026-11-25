@@ -19,5 +19,8 @@ RUN npm run build
 # Expose the port (Render will dynamically override this via the PORT env var)
 EXPOSE 9208
 
+# set production environment for runtime
+ENV NODE_ENV=production
+
 # Boot the Express server
 CMD ["npm", "run", "start", "-w", "appServer"]

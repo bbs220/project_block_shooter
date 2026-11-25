@@ -19,15 +19,11 @@ expressApp.use((req: Request, res: Response, next: NextFunction) => {
     "Permissions-Policy",
     "camera=(), microphone=(), geolocation=()",
   );
-  res.setHeader(
-    "Strict-Transport-Security",
-    "max-age=31536000; includeSubDomains",
-  );
-  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-  res.setHeader("Cross-Origin-Embedder-Policy", "credentialless");
+  res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https: blob:; media-src 'self' data: blob:; connect-src 'self' blob: data: ws: wss:; worker-src 'self' blob:; child-src 'self' blob:; frame-ancestors 'self'; upgrade-insecure-requests;",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https: blob:; media-src 'self' data: https: blob:; connect-src 'self' blob: data: ws: wss: https:; worker-src 'self' blob:; child-src 'self' blob:; frame-ancestors 'self'; upgrade-insecure-requests;",
   );
   res.setHeader("X-Robots-Tag", "index, follow");
   res.setHeader(
