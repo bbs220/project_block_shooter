@@ -1,11 +1,14 @@
 import express, { Request, Response, NextFunction } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import compression from "compression";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export const expressApp = express();
+
+expressApp.use(compression());
 
 // Security and discovery headers middleware
 expressApp.use((req: Request, res: Response, next: NextFunction) => {
@@ -24,7 +27,7 @@ expressApp.use((req: Request, res: Response, next: NextFunction) => {
   res.setHeader("Cross-Origin-Embedder-Policy", "credentialless");
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; media-src 'self' data: blob:; connect-src 'self' ws: wss:; frame-ancestors 'self'; upgrade-insecure-requests;",
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https: blob:; media-src 'self' data: blob:; connect-src 'self' ws: wss:; frame-ancestors 'self'; upgrade-insecure-requests;",
   );
   res.setHeader("X-Robots-Tag", "index, follow");
   res.setHeader(

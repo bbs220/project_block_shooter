@@ -28,6 +28,7 @@ import ScoreboardUI from "./ui/ScoreboardUI";
 import WeaponViewmodel from "./WeaponViewModel";
 import LoadingScreenUI from "./ui/LoadingScreenUI";
 import ConnectionStateUI from "./ui/ConnectionStateUI";
+import { CanvasErrorBoundary } from "./CanvasErrorBoundary";
 
 const PrimaryScene = () => {
   const { showPhyDebug, showGizmo, showFPS } = useTweakpane(
@@ -109,19 +110,26 @@ const PrimaryCanvas = () => {
       {/* pings status */}
       <ConnectionStateUI />
       {/* main viewport with black fallback background */}
-      <Canvas
-        shadows="variance"
-        dpr={setDpr}
-        style={{ backgroundColor: "black" }}
-      >
-        {/* force scene background to black instantly */}
-        <color attach="background" args={["black"]} />
-        {/* group async loading to prevent individual component flashing */}
-        <Suspense fallback={null}>
-          <PrimaryScene />
-          <AdsVignette />
-        </Suspense>
-      </Canvas>
+      <CanvasErrorBoundary>
+        <Canvas
+          shadows="variance"
+          dpr={setDpr}
+          style={{ backgroundColor: "black" }}
+          onCreated={({ gl }) => {
+            gl.domElement.addEventListener("webglcontextlost", (event) => {
+              event.preventDefault();
+            });
+          }}
+        >
+          {/* force scene background to black instantly */}
+          <color attach="background" args={["black"]} />
+          {/* group async loading to prevent individual component flashing */}
+          <Suspense fallback={null}>
+            <PrimaryScene />
+            <AdsVignette />
+          </Suspense>
+        </Canvas>
+      </CanvasErrorBoundary>
     </>
   );
 };
