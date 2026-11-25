@@ -37,7 +37,14 @@ const LoadingScreenUI = () => {
         </h2>
 
         {/* progress bar container */}
-        <div className="w-full h-6 bg-white/10 mb-2 overflow-hidden">
+        <div
+          role="progressbar"
+          aria-valuenow={Math.round(progress)}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label="Loading assets"
+          className="w-full h-6 bg-white/10 mb-2 overflow-hidden"
+        >
           {/* dynamic progress bar fill */}
           <div
             className="h-full bg-white transition-all duration-300"

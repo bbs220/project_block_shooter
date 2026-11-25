@@ -14,26 +14,34 @@ const WelcomePage = () => {
   }, [setActivePage]);
 
   return (
-    <main
-      id="main-content"
-      className="relative flex flex-col items-center justify-center min-h-dvh bg-neutral-900 text-white font-mono p-4"
-    >
-      <div className="w-full max-w-sm md:max-w-md p-6 md:p-10 bg-black/40 border-4 border-white/20 flex flex-col items-center shadow-2xl">
-        <h1 className="text-4xl md:text-5xl font-black text-white tracking-widest uppercase [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000] mb-2 text-center leading-tight">
-          BLOCK
-          <br />
-          SHOOTER
-        </h1>
+    <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-black focus:font-bold focus:shadow-lg focus:outline-none"
+      >
+        Skip to main content
+      </a>
+      <main
+        id="main-content"
+        className="relative flex flex-col items-center justify-center min-h-dvh bg-neutral-900 text-white font-mono p-4"
+      >
+        <div className="w-full max-w-sm md:max-w-md p-6 md:p-10 bg-black/40 border-4 border-white/20 flex flex-col items-center shadow-2xl">
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-widest uppercase [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000] mb-2 text-center leading-tight">
+            BLOCK
+            <br />
+            SHOOTER
+          </h1>
 
-        <p className="text-gray-300 font-black uppercase tracking-widest text-xs md:text-sm mb-10 text-center">
-          8-Player Arena FPS
-        </p>
+          <p className="text-gray-300 font-black uppercase tracking-widest text-xs md:text-sm mb-10 text-center">
+            8-Player Arena FPS
+          </p>
 
-        <Link
-          to="/play"
-          onClick={() => playClick()}
-          className="w-full py-4 flex items-center justify-center gap-3 bg-black/60 border-l-4 border-transparent hover:border-white hover:bg-white/10 text-gray-200 hover:text-white text-lg md:text-xl font-black tracking-widest uppercase transition-all duration-300 ease-out cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-        >
+          <Link
+            to="/play"
+            viewTransition
+            onClick={() => playClick()}
+            className="w-full py-4 flex items-center justify-center gap-3 bg-black/60 border-l-4 border-transparent hover:border-white hover:bg-white/10 text-gray-200 hover:text-white text-lg md:text-xl font-black tracking-widest uppercase transition-all duration-300 ease-out cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          >
           <UserRoundPlus className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" />
           Join Match
         </Link>
@@ -65,6 +73,7 @@ const WelcomePage = () => {
         </a>
       </footer>
     </main>
+    </>
   );
 };
 

@@ -20,9 +20,11 @@ expressApp.use((req: Request, res: Response, next: NextFunction) => {
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains",
   );
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "credentialless");
   res.setHeader(
     "Content-Security-Policy",
-    "upgrade-insecure-requests; frame-ancestors 'self';",
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; media-src 'self' data: blob:; connect-src 'self' ws: wss:; frame-ancestors 'self'; upgrade-insecure-requests;",
   );
   res.setHeader("X-Robots-Tag", "index, follow");
   res.setHeader(
@@ -38,7 +40,23 @@ if (process.env.NODE_ENV === "production") {
   // serve the actual game
   const clientDistPath = path.join(__dirname, "../../appClient/dist");
 
-  expressApp.use(express.static(clientDistPath));
+  expressApp.use(
+    express.static(clientDistPath, {
+      setHeaders: (res: Response, filePath: string) => {
+        if (filePath.endsWith(".html")) {
+          res.setHeader("Cache-Control", "no-cache");
+        } else if (
+          filePath.includes(path.sep + "assets" + path.sep) ||
+          filePath.includes("/assets/")
+        ) {
+          res.setHeader(
+            "Cache-Control",
+            "public, max-age=31536000, immutable",
+          );
+        }
+      },
+    }),
+  );
 
   // Valid client SPA routes that return 200 OK
   const validClientRoutes = new Set(["/", "/play"]);
