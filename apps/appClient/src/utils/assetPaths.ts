@@ -11,7 +11,7 @@ export const iconBank: Record<string, string> = {
 
 export const soundBank: Record<string, string> = {
   click: "/sounds/click.mp3",
-  hit: "/sounds/hit_marker.mp3",
+  hit: "/sounds/hitMarker.mp3",
   kill: "/sounds/kill.mp3",
   thunder: "/sounds/thunder.mp3",
   pistolFire: "/sounds/pistolFire.mp3",

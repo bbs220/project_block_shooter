@@ -27,7 +27,7 @@ expressApp.use((req: Request, res: Response, next: NextFunction) => {
   res.setHeader("Cross-Origin-Embedder-Policy", "credentialless");
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https: blob:; media-src 'self' data: blob:; connect-src 'self' ws: wss:; frame-ancestors 'self'; upgrade-insecure-requests;",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https: blob:; media-src 'self' data: blob:; connect-src 'self' blob: data: ws: wss:; worker-src 'self' blob:; child-src 'self' blob:; frame-ancestors 'self'; upgrade-insecure-requests;",
   );
   res.setHeader("X-Robots-Tag", "index, follow");
   res.setHeader(
